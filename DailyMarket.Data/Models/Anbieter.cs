@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DailyMarket
+namespace DailyMarketData.Models
 {
     public partial class Anbieter
     {

@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DailyMarket.Data;
+using DailyMarketData;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyMarket
 {
@@ -40,6 +42,8 @@ namespace DailyMarket
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
+            services.AddDbContext<DailyMarketContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
