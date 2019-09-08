@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29209.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyMarket", "DailyMarket\DailyMarket.csproj", "{7273D598-5C46-427B-B861-A5DCA0A809CB}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DailyMarketDb", "DailyMarketData\DailyMarketDb.sqlproj", "{5B72A34C-67AA-4F44-9CE6-11B561E770BA}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DailyMarketDb", "DailyMarketDb\DailyMarketDb.sqlproj", "{5B72A34C-67AA-4F44-9CE6-11B561E770BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyMarketData", "DailyMarket.Data\DailyMarketData.csproj", "{E4F8D242-3719-4635-8360-FDD02F9EA1B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyMarketData", "DailyMarketData\DailyMarketData.csproj", "{E4F8D242-3719-4635-8360-FDD02F9EA1B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
