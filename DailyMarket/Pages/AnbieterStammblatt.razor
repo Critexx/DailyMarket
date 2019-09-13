@@ -1,0 +1,85 @@
+﻿@page "/anbieter"
+
+@inject Microsoft.AspNetCore.Components.IUriHelper UriHelper
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@inject AnbieterRepository AnbieterRepo
+
+
+<h3>Anbieter</h3>
+
+@*@if (anbieter == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{*@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Mitglied</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in anbieter)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.Vorname</td>
+                    <td>@a.Nachname</td>
+                    <td>@a.IsMitglied</td>
+                    <button class="btn btn-primary" @onclick="@(() => DeleteAnbieter(a.Id))">Click me</button>
+                    <button class="btn btn-primary" @onclick="AddAnbieter">Add Anbieter</button>
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+    <button class="btn btn-primary" @onclick="ClickHandler">NewTeext</button>
+    <p>@message</p>
+
+
+@code {
+
+    string message = "Hello from ParentComponent";
+
+    void ClickHandler()
+    {
+        message = "NewMessage";
+    }
+
+    protected List<Anbieter> anbieter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        anbieter = await AnbieterRepo.GetAnbieterAsync();
+    }
+
+
+    void DeleteAnbieter(int id)
+    {
+        AnbieterRepo.DeleteAnbieterAsync(id);
+        Anbieter removeAnbieter = anbieter.SingleOrDefault(x => x.Id == id);
+        if(removeAnbieter != null)
+        {
+            anbieter.Remove(removeAnbieter);
+        }
+    }
+    void AddAnbieter()
+    {
+        Anbieter newAnbieter = new Anbieter()
+        {
+            Vorname = "Hansi",
+            Nachname = "foo",
+            IsMitglied = true
+        };
+        AnbieterRepo.CreateAnbieter(newAnbieter);
+        anbieter.Add(newAnbieter);
+
+    }
+}

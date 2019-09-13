@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DailyMarket.Data;
+using DailyMarketData.Repositorys;
 using DailyMarketData;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,11 +44,12 @@ namespace DailyMarket
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
             services.AddDbContext<DailyMarketContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
-
+                options.UseSqlServer(Configuration.GetConnectionString("DailyMarket.Db")));
+        
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddTransient<AnbieterRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
