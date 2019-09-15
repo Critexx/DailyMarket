@@ -1,0 +1,95 @@
+﻿@page "/abotyp/create"
+@page "/abotyp/{Id:int}"
+
+@inject NavigationManager NavigationManager
+@inject AbotypRepository AbotypRepo
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>@title</h3>
+
+<EditForm Model="@abotyp" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label for="Bezeichnung">Bezeichnung: </label>
+        <InputText id="Bezeichnung" @bind-Value="@abotyp.Bezeichnung" />
+    </p>
+    <p>
+        <label for="Beschreibung">Beschreibung: </label>
+        <InputText id="Beschreibung" @bind-Value="@abotyp.Beschreibung" />
+    </p>
+    <p>
+        <label for="AnzahlBelegungNoetig">Anzahl Belegung nötig: </label>
+        <InputNumber id="AnzahlBelegungNoetig" @bind-Value="@abotyp.AnzahlBelegungNoetig" />
+    </p>
+    <p>
+        <label for="Mietdauer">Mietdauer in Tage: </label>
+        <InputNumber id="Mietdauer" @bind-Value="@abotyp.Mietdauer" />
+    </p>
+    <p>
+        <label for="RabattInProzent">Rabatt: </label>
+        <InputNumber id="RabattInProzent" @bind-Value="@abotyp.RabattInProzent" />
+     </p>
+    <p>
+        <label for="GueltigVon">Mitglied: </label>
+        <InputDate id="GueltigVon" @bind-Value="@abotyp.GueltigVon" />
+    </p>
+    <p>
+        <label for="GueltigBis">Mitglied: </label>
+        <InputDate id="GueltigBis" @bind-Value="@abotyp.GueltigBis" />
+    </p>
+
+    <button class="btn btn-primary" type="submit" @onclick="SaveAbotyp">@submitBtnText</button>
+    <button class="btn btn-danger" @onclick="NavigateToAbotyp">Abbrechen</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private Abotyp abotyp = new Abotyp();
+
+    private string title;
+
+    private string submitBtnText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            abotyp = await AbotypRepo.GetAbotypAsync(Id.Value);
+            title = "Abotyp bearbeiten";
+            submitBtnText = "Speichern";
+        }
+        else
+        {
+            title = "Neuen Abotyp erfassen";
+            submitBtnText = "Abotyp erfassen";
+        }
+    }
+
+    private void SaveAbotyp()
+    {
+        if (Id.HasValue)
+        {
+            AbotypRepo.UpdateAbotyp(abotyp);
+        }
+        else
+        {
+            AbotypRepo.CreateAbotyp(abotyp);
+        }
+        NavigateToAbotyp();
+    }
+
+    private void NavigateToAbotyp()
+    {
+        NavigationManager.NavigateTo("Abotyp");
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}

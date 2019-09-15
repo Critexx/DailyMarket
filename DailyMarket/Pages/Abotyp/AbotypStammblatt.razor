@@ -1,0 +1,68 @@
+﻿@page "/abotyp"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using System.Reflection.Metadata
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@inject AbotypRepository AbotypRepo
+
+<h3>Anbieter</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bezeichnung</th>
+            <th>Anzahl Belegung</th>
+            <th>Mietdauer</th>
+            <th>RabattInProzent</th>
+            <th>Gültig von</th>
+            <th>Gültig bis</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Abotyp a in AbotypList)
+        {
+        <tr>
+            <td>@a.Bezeichnung</td>
+            <td>@a.AnzahlBelegungNoetig</td>
+            <td>@a.Mietdauer</td>
+            <td>@a.RabattInProzent</td>
+            <td>@a.GueltigVon</td>
+            <td>@a.GueltigBis</td>
+            <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAbotypDetail(a.Id)))">Detail</button></td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="NavigateToAbotypCreate">Neuer Anbieter</button>
+
+@code {
+    protected List<Abotyp> AbotypList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AbotypList = await AbotypRepo.GetAbotypAsync();
+    }
+
+    void DeleteAbotyp(int id)
+    {
+        AbotypRepo.DeleteAbotypAsync(id);
+        Abotyp removeAbotyp = AbotypList.SingleOrDefault(x => x.Id == id);
+        if (removeAbotyp != null)
+        {
+            AbotypList.Remove(removeAbotyp);
+        }
+    }
+
+    void NavigateToAbotypDetail(int id)
+    {
+        NavigationManager.NavigateTo($"abotyp/{id}");
+    }
+
+    void NavigateToAbotypCreate()
+    {
+        NavigationManager.NavigateTo("abotyp/create");
+    }
+}
