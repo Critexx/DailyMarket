@@ -3,7 +3,7 @@
     [Bezeichnung]           VARCHAR (50)   NOT NULL,
     [Beschreibung]          VARCHAR (MAX)  NULL,
     [Mietdauer]             INT            NOT NULL,
-    [AnzahlBelegungErlaubt] INT            NOT NULL,
+    [AnzahlBelegungNoetig] INT            NOT NULL,
     [GueltigVon]            INT            NOT NULL,
     [GueltigBis]            INT            NULL,
     [RabattInProzent]       DECIMAL (5, 2) NOT NULL,
