@@ -17,6 +17,7 @@ namespace DailyMarketData
         }
 
         public virtual DbSet<Anbieter> Anbieter { get; set; }
+        public virtual DbSet<Abotyp> Abotyp { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +34,22 @@ namespace DailyMarketData
                 entity.Property(e => e.Vorname)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Abotyp>(entity =>
+            {
+                entity.HasIndex(e => e.Bezeichnung)
+                    .HasName("UQ_Abotyp_Bezeichnung")
+                    .IsUnique();
+
+                entity.Property(e => e.Beschreibung).IsUnicode(false);
+
+                entity.Property(e => e.Bezeichnung)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RabattInProzent).HasColumnType("decimal(5, 2)");
             });
 
             OnModelCreatingPartial(modelBuilder);
