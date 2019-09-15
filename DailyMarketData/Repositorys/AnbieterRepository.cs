@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DailyMarketData.Repositorys
@@ -20,10 +21,15 @@ namespace DailyMarketData.Repositorys
             return Task.FromResult(db.Anbieter.ToList());
         }
 
+        public Task<Anbieter> GetAnbieterAsync(int Id)
+        {
+            return Task.FromResult(db.Anbieter.Find(Id));
+        }
+
         public void DeleteAnbieterAsync(int id)
         {
             Anbieter anbieter = db.Anbieter.Find(id);
-            if(anbieter != null)
+            if (anbieter != null)
             {
                 db.Anbieter.Remove(anbieter);
                 db.SaveChanges();

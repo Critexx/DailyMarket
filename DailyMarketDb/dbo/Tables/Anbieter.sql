@@ -2,7 +2,7 @@
     [Id]         INT          IDENTITY (1, 1) NOT NULL,
     [Vorname]    VARCHAR (50) NULL,
     [Nachname]   VARCHAR (50) NULL,
-    [IsMitglied] BIT          NULL,
+    [IsMitglied] BIT          NOT NULL,
     CONSTRAINT [PK_Anbieter] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

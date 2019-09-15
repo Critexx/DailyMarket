@@ -1,0 +1,79 @@
+﻿@page "/anbieter/create"
+@page "/anbieter/{Id:int}"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject AnbieterRepository AnbieterRepo
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>@title</h3>
+
+<EditForm Model="@Anbieter" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label for="vorname">Vorname: </label>
+        <InputText id="vorname" @bind-Value="@Anbieter.Vorname" />
+    </p>
+    <p>
+        <label for="nachname">Nachname: </label>
+        <InputText id="nachname" @bind-Value="@Anbieter.Nachname" />
+    </p>
+    <p>
+        <label for="isMitglied">Mitglied: </label>
+        <InputCheckbox id="isMitglied" @bind-Value="@Anbieter.IsMitglied" />
+    </p>
+
+    <button class="btn btn-primary" type="submit" @onclick="SaveAnbieter">@submitBtnText</button>
+    <button class="btn btn-danger" @onclick="NavigateToAnbieter">Abbrechen</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private Anbieter Anbieter { get; set; } = new Anbieter();
+
+    private string title;
+
+    private string submitBtnText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            Anbieter = await AnbieterRepo.GetAnbieterAsync(Id.Value);
+            title = "Anbieter bearbeiten";
+            submitBtnText = "Speichern";
+        }
+        else
+        {
+            title = "Neuen Anbieter erfassen";
+            submitBtnText = "Anbieter erfassen";
+        }
+    }
+
+    private void SaveAnbieter()
+    {
+        if (Id.HasValue)
+        {
+            AnbieterRepo.UpdateAnbieter(Anbieter);
+        }
+        else
+        {
+            AnbieterRepo.CreateAnbieter(Anbieter);
+        }
+        NavigateToAnbieter();
+    }
+
+    private void NavigateToAnbieter()
+    {
+        NavigationManager.NavigateTo("anbieter");
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}
