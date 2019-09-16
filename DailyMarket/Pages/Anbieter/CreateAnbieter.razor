@@ -3,6 +3,8 @@
 
 @inject NavigationManager NavigationManager
 @inject AnbieterRepository AnbieterRepo
+
+@using System.Security.Claims
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
 @using Microsoft.AspNetCore.Components
@@ -33,6 +35,8 @@
     [Parameter]
     public int? Id { get; set; }
 
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     private Anbieter Anbieter { get; set; } = new Anbieter();
 
     private string title;
@@ -45,6 +49,7 @@
         {
             Anbieter = await AnbieterRepo.GetAnbieterAsync(Id.Value);
             title = "Anbieter bearbeiten";
+            //title = @context.User.Identity.Name;
             submitBtnText = "Speichern";
         }
         else
@@ -54,14 +59,19 @@
         }
     }
 
-    private void SaveAnbieter()
+    private async Task SaveAnbieter()
     {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
         if (Id.HasValue)
         {
+            Anbieter.UpdatedBy = user.Identity.Name;
             AnbieterRepo.UpdateAnbieter(Anbieter);
         }
         else
         {
+            Anbieter.CreatedBy = user.Identity.Name;
             AnbieterRepo.CreateAnbieter(Anbieter);
         }
         NavigateToAnbieter();

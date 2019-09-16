@@ -38,6 +38,7 @@ namespace DailyMarketData.Repositorys
 
         public void CreateAnbieter(Anbieter anbieter)
         {
+            anbieter.CreatedAt = DateTime.Now;
             db.Anbieter.Add(anbieter);
             db.SaveChanges();
         }
@@ -45,6 +46,7 @@ namespace DailyMarketData.Repositorys
         public void UpdateAnbieter(Anbieter anbieter)
         {
             if(anbieter == null) return;
+            anbieter.UpdatedAt = DateTime.Now;
             db.Anbieter.Update(anbieter);
         }
     }

@@ -38,13 +38,15 @@ namespace DailyMarketData.Repositorys
 
         public void CreateAbotyp(Abotyp abotyp)
         {
+            abotyp.CreatedAt = DateTime.Now;
             db.Abotyp.Add(abotyp);
             db.SaveChanges();
         }
 
         public void UpdateAbotyp(Abotyp abotyp)
         {
-            if(abotyp == null) return;
+            if (abotyp == null) return;
+            abotyp.UpdatedAt = DateTime.Now;
             db.Abotyp.Update(abotyp);
         }
     }
