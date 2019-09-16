@@ -10,8 +10,12 @@ namespace DailyMarketData.Models
         public string Beschreibung { get; set; }
         public int Mietdauer { get; set; }
         public int AnzahlBelegungNoetig { get; set; }
-        public int GueltigVon { get; set; }
-        public int? GueltigBis { get; set; }
+        public DateTime GueltigVon { get; set; }
+        public DateTime? GueltigBis { get; set; }
         public decimal RabattInProzent { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

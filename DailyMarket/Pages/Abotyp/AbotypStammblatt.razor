@@ -6,7 +6,7 @@
 @using DailyMarketData.Models
 @inject AbotypRepository AbotypRepo
 
-<h3>Anbieter</h3>
+<h3>Abotyp</h3>
 
 <table class="table">
     <thead>
@@ -36,7 +36,7 @@
 
     </tbody>
 </table>
-<button class="btn btn-primary" @onclick="NavigateToAbotypCreate">Neuer Anbieter</button>
+<button class="btn btn-primary" @onclick="NavigateToAbotypCreate">Neuer Abotyp</button>
 
 @code {
     protected List<Abotyp> AbotypList { get; set; }

@@ -29,21 +29,22 @@
         <InputNumber id="Mietdauer" @bind-Value="@abotyp.Mietdauer" />
     </p>
     <p>
-        <label for="RabattInProzent">Rabatt: </label>
+        <label for="RabattInProzent">Rabatt in %: </label>
         <InputNumber id="RabattInProzent" @bind-Value="@abotyp.RabattInProzent" />
      </p>
     <p>
-        <label for="GueltigVon">Mitglied: </label>
+        <label for="GueltigVon">Gültig von: </label>
         <InputDate id="GueltigVon" @bind-Value="@abotyp.GueltigVon" />
     </p>
     <p>
-        <label for="GueltigBis">Mitglied: </label>
+        <label for="GueltigBis">Gültig bis: </label>
         <InputDate id="GueltigBis" @bind-Value="@abotyp.GueltigBis" />
     </p>
 
     <button class="btn btn-primary" type="submit" @onclick="SaveAbotyp">@submitBtnText</button>
     <button class="btn btn-danger" @onclick="NavigateToAbotyp">Abbrechen</button>
 </EditForm>
+
 
 @code {
     [Parameter]
@@ -65,7 +66,7 @@
         }
         else
         {
-            title = "Neuen Abotyp erfassen";
+            title = "Neuer Abotyp erfassen";
             submitBtnText = "Abotyp erfassen";
         }
     }
@@ -85,7 +86,7 @@
 
     private void NavigateToAbotyp()
     {
-        NavigationManager.NavigateTo("Abotyp");
+        NavigationManager.NavigateTo("abotyp");
     }
 
     private void HandleValidSubmit()
