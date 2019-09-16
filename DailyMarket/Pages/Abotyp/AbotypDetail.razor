@@ -18,7 +18,7 @@
     </p>
     <p>
         <label for="Beschreibung">Beschreibung: </label>
-        <InputText id="Beschreibung" @bind-Value="@abotyp.Beschreibung" />
+        <InputTextArea id="Beschreibung" @bind-Value="@abotyp.Beschreibung" />
     </p>
     <p>
         <label for="AnzahlBelegungNoetig">Anzahl Belegung nötig: </label>
@@ -41,16 +41,15 @@
         <InputDate id="GueltigBis" @bind-Value="@abotyp.GueltigBis" />
     </p>
 
-    <button class="btn btn-primary" type="submit" @onclick="SaveAbotyp">@submitBtnText</button>
-    <button class="btn btn-danger" @onclick="NavigateToAbotyp">Abbrechen</button>
+    <button class="btn btn-primary" type="submit">@submitBtnText</button>
 </EditForm>
-
+    <button class="btn btn-danger mt-3" @onclick="NavigateToAbotyp">Abbrechen</button>
 
 @code {
     [Parameter]
     public int? Id { get; set; }
 
-    private Abotyp abotyp = new Abotyp();
+    private Abotyp abotyp = new DailyMarketData.Models.Abotyp();
 
     private string title;
 
@@ -71,7 +70,12 @@
         }
     }
 
-    private void SaveAbotyp()
+    private void NavigateToAbotyp()
+    {
+        NavigationManager.NavigateTo("abotyp");
+    }
+
+    private void HandleValidSubmit()
     {
         if (Id.HasValue)
         {
@@ -82,15 +86,5 @@
             AbotypRepo.CreateAbotyp(abotyp);
         }
         NavigateToAbotyp();
-    }
-
-    private void NavigateToAbotyp()
-    {
-        NavigationManager.NavigateTo("abotyp");
-    }
-
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("OnValidSubmit");
     }
 }
