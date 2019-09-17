@@ -71,6 +71,11 @@
     <Build Include="dbo\Tables\Standort.sql" />
     <Build Include="dbo\Tables\Standplatz.sql" />
     <Build Include="dbo\Tables\Belegung.sql" />
+    <Build Include="dbo\Tables\Rapport.sql" />
+    <Build Include="dbo\Tables\Pendenz.sql" />
+    <Build Include="dbo\Tables\Mitgliedsanforderung_Anbieter.sql" />
+    <Build Include="dbo\Tables\Mitgliedsanforderung.sql" />
+    <Build Include="dbo\Tables\Mitarbeiter.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Testdata\Testdata_Anbieter.sql" />
