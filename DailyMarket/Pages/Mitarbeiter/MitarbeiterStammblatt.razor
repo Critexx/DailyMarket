@@ -1,0 +1,64 @@
+﻿@page "/mitarbeiter"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using System.Reflection.Metadata
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@inject MitarbeiterRepository MitarbeiterRepo
+
+<h3>Mitarbeiter</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Stundensatz</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in MitarbeiterList)
+        {
+            <tr>
+                <td>@a.Id</td>
+                <td>@a.Vorname</td>
+                <td>@a.Nachname</td>
+                <td>@a.Stundensatz</td>
+                <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToMitarbeiterEdit(a.Id)))">Bearbeiten</button></td>
+                <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitarbeiter(a.Id)))">Löschen</button></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="NavigateToMitarbeiterCreate">Neuer Mitarbeiter</button>
+
+@code {
+    protected List<Mitarbeiter> MitarbeiterList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MitarbeiterList = await MitarbeiterRepo.GetMitarbeiterAsync();
+    }
+
+    void DeleteMitarbeiter(int id)
+    {
+        MitarbeiterRepo.DeleteMitarbeiterAsync(id);
+        Mitarbeiter removeMitarbeiter = MitarbeiterList.SingleOrDefault(x => x.Id == id);
+        if (removeMitarbeiter != null)
+        {
+            MitarbeiterList.Remove(removeMitarbeiter);
+        }
+    }
+
+    void NavigateToMitarbeiterEdit(int id)
+    {
+        NavigationManager.NavigateTo($"mitarbeiter/{id}");
+    }
+
+    void NavigateToMitarbeiterCreate()
+    {
+        NavigationManager.NavigateTo("mitarbeiter/create");
+    }
+}

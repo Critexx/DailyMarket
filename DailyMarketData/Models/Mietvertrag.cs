@@ -16,6 +16,10 @@ namespace DailyMarketData.Models
         public DateTime GueltigVon { get; set; }
         public DateTime? GueltigBis { get; set; }
         public decimal Abrechnung { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string UpdatedBy { get; set; }
 
         public virtual Abotyp Abotyp { get; set; }
         public virtual Anbieter Anbieter { get; set; }

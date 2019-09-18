@@ -16,6 +16,10 @@ namespace DailyMarketData.Models
         public string Titel { get; set; }
         public string Beschreibung { get; set; }
         public int Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string UpdatedBy { get; set; }
 
         public virtual Anbieter Anbieter { get; set; }
         public virtual Mitgliedsanforderung Mitgliedsanforderung { get; set; }

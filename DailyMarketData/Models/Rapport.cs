@@ -12,6 +12,10 @@ namespace DailyMarketData.Models
         public string Beschreibung { get; set; }
         public decimal Aufwand { get; set; }
         public decimal Stundensatz { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string UpdatedBy { get; set; }
 
         public virtual Mitarbeiter Mitarbeiter { get; set; }
         public virtual Pendenz Pendenz { get; set; }

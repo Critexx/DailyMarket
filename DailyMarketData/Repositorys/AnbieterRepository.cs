@@ -8,46 +8,46 @@ using System.Threading.Tasks;
 
 namespace DailyMarketData.Repositorys
 {
-    public class AnbieterRepository
+    public class MitarbeiterRepository
     {
         private DailyMarketContext db { get; set; }
-        public AnbieterRepository(DailyMarketContext db)
+        public MitarbeiterRepository(DailyMarketContext db)
         {
             this.db = db;
         }
 
-        public Task<List<Anbieter>> GetAnbieterAsync()
+        public Task<List<Mitarbeiter>> GetMitarbeiterAsync()
         {
-            return Task.FromResult(db.Anbieter.ToList());
+            return Task.FromResult(db.Mitarbeiter.ToList());
         }
 
-        public Task<Anbieter> GetAnbieterAsync(int Id)
+        public Task<Mitarbeiter> GetMitarbeiterAsync(int Id)
         {
-            return Task.FromResult(db.Anbieter.Find(Id));
+            return Task.FromResult(db.Mitarbeiter.Find(Id));
         }
 
-        public void DeleteAnbieterAsync(int id)
+        public void DeleteMitarbeiterAsync(int id)
         {
-            Anbieter anbieter = db.Anbieter.Find(id);
-            if (anbieter != null)
+            Mitarbeiter Mitarbeiter = db.Mitarbeiter.Find(id);
+            if (Mitarbeiter != null)
             {
-                db.Anbieter.Remove(anbieter);
+                db.Mitarbeiter.Remove(Mitarbeiter);
                 db.SaveChanges();
             }
         }
 
-        public void CreateAnbieter(Anbieter anbieter)
+        public void CreateMitarbeiter(Mitarbeiter Mitarbeiter)
         {
-            anbieter.CreatedAt = DateTime.Now;
-            db.Anbieter.Add(anbieter);
+            Mitarbeiter.CreatedAt = DateTime.Now;
+            db.Mitarbeiter.Add(Mitarbeiter);
             db.SaveChanges();
         }
 
-        public void UpdateAnbieter(Anbieter anbieter)
+        public void UpdateMitarbeiter(Mitarbeiter Mitarbeiter)
         {
-            if(anbieter == null) return;
-            anbieter.UpdatedAt = DateTime.Now;
-            db.Anbieter.Update(anbieter);
+            if(Mitarbeiter == null) return;
+            Mitarbeiter.UpdatedAt = DateTime.Now;
+            db.Mitarbeiter.Update(Mitarbeiter);
         }
     }
 }

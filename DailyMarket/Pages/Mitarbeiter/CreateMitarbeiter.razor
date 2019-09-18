@@ -1,0 +1,89 @@
+﻿@page "/mitarbeiter/create"
+@page "/mitarbeiter/{Id:int}"
+
+@inject NavigationManager NavigationManager
+@inject MitarbeiterRepository MitarbeiterRepo
+
+@using System.Security.Claims
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>@title</h3>
+
+<EditForm Model="@Mitarbeiter" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label for="vorname">Vorname: </label>
+        <InputText id="vorname" @bind-Value="@Mitarbeiter.Vorname" />
+    </p>
+    <p>
+        <label for="nachname">Nachname: </label>
+        <InputText id="nachname" @bind-Value="@Mitarbeiter.Nachname" />
+    </p>
+    <p>
+        <label for="Stundensatz">Stundensatz: </label>
+        <InputNumber id="Stundensatz" @bind-Value="@Mitarbeiter.Stundensatz" />
+    </p>
+
+    <button class="btn btn-primary" type="submit" @onclick="SaveMitarbeiter">@submitBtnText</button>
+    <button class="btn btn-danger" @onclick="NavigateToMitarbeiter">Abbrechen</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Mitarbeiter Mitarbeiter { get; set; } = new Mitarbeiter();
+
+    private string title;
+
+    private string submitBtnText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            Mitarbeiter = await MitarbeiterRepo.GetMitarbeiterAsync(Id.Value);
+            title = "Mitarbeiter bearbeiten";
+            //title = @context.User.Identity.Name;
+            submitBtnText = "Speichern";
+        }
+        else
+        {
+            title = "Neuen Mitarbeiter erfassen";
+            submitBtnText = "Mitarbeiter erfassen";
+        }
+    }
+
+    private async Task SaveMitarbeiter()
+    {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
+        if (Id.HasValue)
+        {
+            Mitarbeiter.UpdatedBy = user.Identity.Name;
+            MitarbeiterRepo.UpdateMitarbeiter(Mitarbeiter);
+        }
+        else
+        {
+            Mitarbeiter.CreatedBy = user.Identity.Name;
+            MitarbeiterRepo.CreateMitarbeiter(Mitarbeiter);
+        }
+        NavigateToMitarbeiter();
+    }
+
+    private void NavigateToMitarbeiter()
+    {
+        NavigationManager.NavigateTo("Mitarbeiter");
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}
