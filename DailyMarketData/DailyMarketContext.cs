@@ -247,7 +247,7 @@ namespace DailyMarketData
                 entity.Property(e => e.PreisProTag).HasColumnType("money");
 
                 entity.HasOne(d => d.Standort)
-                    .WithMany(p => p.Standplatz)
+                    .WithMany(p => p.Standplaetze)
                     .HasForeignKey(d => d.StandortId)
                     .HasConstraintName("FK_Standplatz_Standort");
             });

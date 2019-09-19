@@ -7,7 +7,7 @@ namespace DailyMarketData.Models
     {
         public Standort()
         {
-            Standplatz = new HashSet<Standplatz>();
+            Standplaetze = new HashSet<Standplatz>();
         }
 
         public int Id { get; set; }
@@ -15,7 +15,11 @@ namespace DailyMarketData.Models
         public string Strasse { get; set; }
         public string Plz { get; set; }
         public string Ort { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string UpdatedBy { get; set; }
 
-        public virtual ICollection<Standplatz> Standplatz { get; set; }
+        public virtual ICollection<Standplatz> Standplaetze { get; set; }
     }
 }

@@ -1,0 +1,68 @@
+﻿@page "/standort"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using System.Reflection.Metadata
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@inject StandortRepository StandortRepo
+
+<h3>Standort</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Bezeichnung</th>
+            <th>Ort</th>
+            <th>Plz</th>
+            <th>Strasse</th>
+            <th>Anzahl Standplätze</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in StandortList)
+        {
+        <tr>
+            <td>@a.Id</td>
+            <td>@a.Bezeichnung</td>
+            <td>@a.Ort</td>
+            <td>@a.Plz</td>
+            <td>@a.Strasse</td>
+            <td>@a.Standplaetze.Count</td>@* TODO optional: viewmodel erstellen um Standplätze frei und belegt anzuzeigen *@ 
+            <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToStandortEdit(a.Id)))">Bearbeiten</button></td>
+            <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteStandort(a.Id)))">Löschen</button></td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="NavigateToStandortCreate">Neuer Standort</button>
+
+@code {
+    protected List<Standort> StandortList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        StandortList = await StandortRepo.GetStandortAsync();
+    }
+
+    void DeleteStandort(int id)
+    {
+        StandortRepo.DeleteStandortAsync(id);
+        Standort removeStandort = StandortList.SingleOrDefault(x => x.Id == id);
+        if (removeStandort != null)
+        {
+            StandortList.Remove(removeStandort);
+        }
+    }
+
+    void NavigateToStandortEdit(int id)
+    {
+        NavigationManager.NavigateTo($"standort/{id}");
+    }
+
+    void NavigateToStandortCreate()
+    {
+        NavigationManager.NavigateTo("standort/create");
+    }
+}
