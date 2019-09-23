@@ -16,9 +16,17 @@
 
 
 
+
+
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [UQ_Standplatz_StandortId_Nr]
     ON [dbo].[Standplatz]([StandortId] ASC, [Nr] ASC);
+
+
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'StandplatzNr muss pro Standort unique sein', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Standplatz', @level2type = N'INDEX', @level2name = N'UQ_Standplatz_StandortId_Nr';
 
 
 GO

@@ -59,11 +59,6 @@
         }
     }
 
-    void NavigateToMitgliedsanforderungEdit(int id)
-    {
-        NavigationManager.NavigateTo($"mitgliedsanforderung/{id}");
-    }
-
     private async Task Save()
     {
         AuthenticationState authState = await AuthenticationStateTask;
