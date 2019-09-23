@@ -76,6 +76,7 @@
     <Build Include="dbo\Tables\Mitgliedsanforderung_Anbieter.sql" />
     <Build Include="dbo\Tables\Mitgliedsanforderung.sql" />
     <Build Include="dbo\Tables\Mitarbeiter.sql" />
+    <None Include="Scripts\Testdata\insert_Testdata.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Testdata\Testdata_Anbieter.sql" />

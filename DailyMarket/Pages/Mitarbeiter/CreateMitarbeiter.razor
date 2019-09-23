@@ -11,7 +11,7 @@
 
 <h3>@title</h3>
 
-<EditForm Model="@Mitarbeiter" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@Mitarbeiter" OnValidSubmit="@SaveMitarbeiter">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>
@@ -27,7 +27,7 @@
         <InputNumber id="Stundensatz" @bind-Value="@Mitarbeiter.Stundensatz" />
     </p>
 
-    <button class="btn btn-primary" type="submit" @onclick="SaveMitarbeiter">@submitBtnText</button>
+    <button class="btn btn-primary" type="submit">@submitBtnText</button>
     <button class="btn btn-danger" @onclick="NavigateToMitarbeiter">Abbrechen</button>
 </EditForm>
 
@@ -49,12 +49,11 @@
         {
             Mitarbeiter = await MitarbeiterRepo.GetMitarbeiterAsync(Id.Value);
             title = "Mitarbeiter bearbeiten";
-            //title = @context.User.Identity.Name;
             submitBtnText = "Speichern";
         }
         else
         {
-            title = "Neuen Mitarbeiter erfassen";
+            title = "Neuer Mitarbeiter erfassen";
             submitBtnText = "Mitarbeiter erfassen";
         }
     }
@@ -82,8 +81,4 @@
         NavigationManager.NavigateTo("Mitarbeiter");
     }
 
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("OnValidSubmit");
-    }
 }

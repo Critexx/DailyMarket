@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DailyMarketData.Models
 {
@@ -19,6 +20,13 @@ namespace DailyMarketData.Models
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
+
+        [NotMapped]
+        public int AnzahlStandplaetze { get; set; }
+
+        [NotMapped]
+        public decimal PreisProTag { get; set; }
+
 
         public virtual ICollection<Standplatz> Standplaetze { get; set; }
     }

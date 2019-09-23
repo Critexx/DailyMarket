@@ -1,9 +1,10 @@
-﻿@page "/mitarbeiter/create"
-@page "/mitarbeiter/{Id:int}"
+﻿@page "/standort/create"
+@page "/standort/{Id:int}"
 
 @inject NavigationManager NavigationManager
-@inject MitarbeiterRepository MitarbeiterRepo
+@inject StandortRepository StandortRepo
 
+@using System.Runtime.CompilerServices
 @using System.Security.Claims
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
@@ -11,24 +12,63 @@
 
 <h3>@title</h3>
 
-<EditForm Model="@Mitarbeiter" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@Standort" OnValidSubmit="@SaveStandort">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>
-        <label for="vorname">Vorname: </label>
-        <InputText id="vorname" @bind-Value="@Mitarbeiter.Vorname" />
+        <label for="Bezeichnung">Bezeichnung: </label>
+        <InputText id="Bezeichnung" @bind-Value="@Standort.Bezeichnung" />
     </p>
     <p>
-        <label for="nachname">Nachname: </label>
-        <InputText id="nachname" @bind-Value="@Mitarbeiter.Nachname" />
+        <label for="Ort">Ort: </label>
+        <InputText id="Ort" @bind-Value="@Standort.Ort" />
     </p>
     <p>
-        <label for="Stundensatz">Stundensatz: </label>
-        <InputNumber id="Stundensatz" @bind-Value="@Mitarbeiter.Stundensatz" />
+        <label for="Plz">Plz: </label>
+        <InputText id="Plz" @bind-Value="@Standort.Plz" />
     </p>
+    <p>
+        <label for="Strasse">Strasse: </label>
+        <InputText id="Strasse" @bind-Value="@Standort.Strasse" />
+    </p>
+    @if (!Id.HasValue)
+    {
+        <p>
+            <label for="AnzahlStandplaetze">Anzahl Standplätze: </label>
+            <InputNumber id="AnzahlStandplaetze" @bind-Value="@Standort.AnzahlStandplaetze" />
+        </p>
+        <p>
+            <label for="PreisProTag">Preis pro Tag: </label>
+            <InputNumber id="PreisProTag" @bind-Value="@Standort.PreisProTag" />
+        </p>
+    }
 
-    <button class="btn btn-primary" type="submit" @onclick="SaveMitarbeiter">@submitBtnText</button>
-    <button class="btn btn-danger" @onclick="NavigateToMitarbeiter">Abbrechen</button>
+    @if (Id.HasValue)
+    {
+        <h4>Standplätze</h4>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Nr</th>
+                    <th>Preis / Tag</th>
+                    @* TODO: Belegung anzeigen -> Frei = Ja/nein *@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Standplatz standplatz in Standort.Standplaetze)
+                {
+                    <tr>
+                        <td>@standplatz.Nr</td>
+                        <td>CHF <InputNumber id="PreisProTag" @bind-Value="@standplatz.PreisProTag" /></td>
+                        @*<td>@string.Format("{0:C}",standplatz.PreisProTag.GetValueOrDefault())</td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <button class="btn btn-primary" type="submit">@submitBtnText</button>
+    <button class="btn btn-danger" @onclick="NavigateToStandort">Abbrechen</button>
 </EditForm>
 
 @code {
@@ -37,7 +77,7 @@
 
     [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    private Mitarbeiter Mitarbeiter { get; set; } = new Mitarbeiter();
+    private Standort Standort { get; set; } = new Standort();
 
     private string title;
 
@@ -47,43 +87,38 @@
     {
         if (Id.HasValue)
         {
-            Mitarbeiter = await MitarbeiterRepo.GetMitarbeiterAsync(Id.Value);
-            title = "Mitarbeiter bearbeiten";
-            //title = @context.User.Identity.Name;
+            Standort = await StandortRepo.GetStandortAsync(Id.Value);
+            title = "Standort Detail";
             submitBtnText = "Speichern";
         }
         else
         {
-            title = "Neuen Mitarbeiter erfassen";
-            submitBtnText = "Mitarbeiter erfassen";
+            title = "Neuer Standort erfassen";
+            submitBtnText = "Standort erfassen";
         }
     }
 
-    private async Task SaveMitarbeiter()
+    private async Task SaveStandort()
     {
         AuthenticationState authState = await AuthenticationStateTask;
         ClaimsPrincipal user = authState.User;
 
         if (Id.HasValue)
         {
-            Mitarbeiter.UpdatedBy = user.Identity.Name;
-            MitarbeiterRepo.UpdateMitarbeiter(Mitarbeiter);
+            Standort.UpdatedBy = user.Identity.Name;
+            StandortRepo.UpdateStandort(Standort);
         }
         else
         {
-            Mitarbeiter.CreatedBy = user.Identity.Name;
-            MitarbeiterRepo.CreateMitarbeiter(Mitarbeiter);
+            Standort.CreatedBy = user.Identity.Name;
+            StandortRepo.CreateStandort(Standort);
         }
-        NavigateToMitarbeiter();
+        NavigateToStandort();
     }
 
-    private void NavigateToMitarbeiter()
+    private void NavigateToStandort()
     {
-        NavigationManager.NavigateTo("Mitarbeiter");
+        NavigationManager.NavigateTo("standort");
     }
 
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("OnValidSubmit");
-    }
 }

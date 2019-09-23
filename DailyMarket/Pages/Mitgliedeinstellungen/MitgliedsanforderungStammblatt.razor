@@ -1,0 +1,93 @@
+﻿@page "/mitgliedeinstellung"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using System.Reflection.Metadata
+@using System.Security.Claims
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+@inject MitgliedsanforderungRepository MitgliedsanforderungRepo
+
+<h3>Mitgliedsanforderungen</h3>
+
+<EditForm Model="@MitgliedsanforderungList" OnValidSubmit="@Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bezeichnung</th>
+                <th>Gültigkeit in Tage</th>
+                <th>Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Mitgliedsanforderung mitgliedsanforderung in MitgliedsanforderungList)
+            {
+                <tr>
+                    <td><InputText id="Bezeichnung" @bind-Value="@mitgliedsanforderung.Bezeichnung" /></td>
+                    <td><InputNumber id="Gueltigkeitsdauer" @bind-Value="@mitgliedsanforderung.Gueltigkeitsdauer" /></td>
+                    <td><InputText id="Beschreibung" @bind-Value="@mitgliedsanforderung.Beschreibung" /></td>
+                    <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitgliedsanforderung(mitgliedsanforderung.Id)))">Löschen</button></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <button class="btn btn-primary" type="submit">Speichern</button>
+    <button class="btn btn-primary" @onclick="AddRow">Neue Mitgliedsanforderung</button>
+    
+</EditForm>
+
+@code {
+    protected List<Mitgliedsanforderung> MitgliedsanforderungList { get; set; } = new List<Mitgliedsanforderung>();
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MitgliedsanforderungList = await MitgliedsanforderungRepo.GetMitgliedsanforderungAsync();
+    }
+
+    void DeleteMitgliedsanforderung(int id)
+    {
+        MitgliedsanforderungRepo.DeleteMitgliedsanforderungAsync(id);
+        Mitgliedsanforderung removeMitgliedsanforderung = MitgliedsanforderungList.SingleOrDefault(x => x.Id == id);
+        if (removeMitgliedsanforderung != null)
+        {
+            MitgliedsanforderungList.Remove(removeMitgliedsanforderung);
+        }
+    }
+
+    void NavigateToMitgliedsanforderungEdit(int id)
+    {
+        NavigationManager.NavigateTo($"mitgliedsanforderung/{id}");
+    }
+
+    private async Task Save()
+    {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+        foreach (Mitgliedsanforderung mitgliedsanforderung in MitgliedsanforderungList)
+        {
+            mitgliedsanforderung.UpdatedBy = user.Identity.Name;
+            mitgliedsanforderung.UpdatedAt = DateTime.Now;
+        }
+        MitgliedsanforderungRepo.UpdateMitgliedsanforderung(MitgliedsanforderungList);
+
+    }
+
+    private async Task AddRow()
+    {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
+        Mitgliedsanforderung mitgliedsanforderung = new Mitgliedsanforderung()
+        {
+            Bezeichnung = "Neue Mitgliedsanforderung",
+            CreatedBy = user.Identity.Name
+        };
+        MitgliedsanforderungRepo.CreateMitgliedsanforderung(mitgliedsanforderung);
+        MitgliedsanforderungList = await MitgliedsanforderungRepo.GetMitgliedsanforderungAsync();
+    }
+}

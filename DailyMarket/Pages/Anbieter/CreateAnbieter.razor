@@ -11,7 +11,7 @@
 
 <h3>@title</h3>
 
-<EditForm Model="@Anbieter" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@Anbieter" OnValidSubmit="@SaveAnbieter">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>
@@ -27,7 +27,7 @@
         <InputCheckbox id="isMitglied" @bind-Value="@Anbieter.IsMitglied" />
     </p>
 
-    <button class="btn btn-primary" type="submit" @onclick="SaveAnbieter">@submitBtnText</button>
+    <button class="btn btn-primary" type="submit" >@submitBtnText</button>
     <button class="btn btn-danger" @onclick="NavigateToAnbieter">Abbrechen</button>
 </EditForm>
 
@@ -49,12 +49,11 @@
         {
             Anbieter = await AnbieterRepo.GetAnbieterAsync(Id.Value);
             title = "Anbieter bearbeiten";
-            //title = @context.User.Identity.Name;
             submitBtnText = "Speichern";
         }
         else
         {
-            title = "Neuen Anbieter erfassen";
+            title = "Neuer Anbieter erfassen";
             submitBtnText = "Anbieter erfassen";
         }
     }
@@ -82,8 +81,4 @@
         NavigationManager.NavigateTo("anbieter");
     }
 
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("OnValidSubmit");
-    }
 }

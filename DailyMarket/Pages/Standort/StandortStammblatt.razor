@@ -39,7 +39,7 @@
 <button class="btn btn-primary" @onclick="NavigateToStandortCreate">Neuer Standort</button>
 
 @code {
-    protected List<Standort> StandortList { get; set; }
+    protected List<Standort> StandortList { get; set; } = new List<Standort>();
 
     protected override async Task OnInitializedAsync()
     {

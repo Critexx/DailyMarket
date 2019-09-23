@@ -8,6 +8,10 @@ h3 {
     margin-bottom: 30px;
 }
 
+h4 {
+    margin-top: 30px;
+}
+
 a, .btn-link {
     color: #0366d6;
 }

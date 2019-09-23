@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyMarketData.Repositorys
 {
@@ -18,36 +19,55 @@ namespace DailyMarketData.Repositorys
 
         public Task<List<Standort>> GetStandortAsync()
         {
-            return Task.FromResult(db.Standort.ToList());
+            return db.Standort.Include(x => x.Standplaetze).ToListAsync();
         }
 
         public Task<Standort> GetStandortAsync(int Id)
         {
-            return Task.FromResult(db.Standort.Find(Id));
+            return db.Standort.Include(x => x.Standplaetze).SingleOrDefaultAsync(x => x.Id == Id);
         }
 
         public void DeleteStandortAsync(int id)
         {
-            Standort Standort = db.Standort.Find(id);
-            if (Standort != null)
+            Standort standort = db.Standort.Find(id);
+            if (standort != null)
             {
-                db.Standort.Remove(Standort);
+                db.Standort.Remove(standort);
                 db.SaveChanges();
             }
         }
 
-        public void CreateStandort(Standort Standort)
+        public void CreateStandort(Standort standort)
         {
-            Standort.CreatedAt = DateTime.Now;
-            db.Standort.Add(Standort);
+            List<Standplatz> standplaetze = new List<Standplatz>();
+            for (int i = 1; i <= standort.AnzahlStandplaetze; i++)
+            {
+                standplaetze.Add(new Standplatz()
+                {
+                    Nr = i,
+                    PreisProTag = standort.PreisProTag,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = standort.CreatedBy
+                });
+            }
+
+            standort.Standplaetze = standplaetze;
+            standort.CreatedAt = DateTime.Now;
+            db.Standort.Add(standort);
             db.SaveChanges();
         }
 
-        public void UpdateStandort(Standort Standort)
+        public void UpdateStandort(Standort standort)
         {
-            if(Standort == null) return;
-            Standort.UpdatedAt = DateTime.Now;
-            db.Standort.Update(Standort);
+            if(standort == null) return;
+            foreach (Standplatz standplatz in standort.Standplaetze)
+            {
+                standplatz.UpdatedAt = DateTime.Now;
+                standplatz.UpdatedBy = standort.UpdatedBy;
+            }
+            standort.UpdatedAt = DateTime.Now;
+            db.Standort.Update(standort);
+            db.SaveChanges();
         }
     }
 }

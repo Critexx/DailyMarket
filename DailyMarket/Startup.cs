@@ -51,6 +51,9 @@ namespace DailyMarket
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<AnbieterRepository>();
             services.AddTransient<AbotypRepository>();
+            services.AddTransient<MitarbeiterRepository>();
+            services.AddTransient<StandortRepository>();
+            services.AddTransient<MitgliedsanforderungRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

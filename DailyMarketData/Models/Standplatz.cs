@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DailyMarketData.Models
 {
@@ -11,7 +12,8 @@ namespace DailyMarketData.Models
         }
 
         public int Id { get; set; }
-        public int? StandortId { get; set; }
+        public int StandortId { get; set; }
+        public int Nr { get; set; }
         public decimal? PreisProTag { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
