@@ -17,6 +17,8 @@
             <th>Plz</th>
             <th>Strasse</th>
             <th>Anzahl Standplätze</th>
+            <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
+            <th class="alignCenter"><span class="oi oi-delete"></span></th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +31,8 @@
             <td>@a.Plz</td>
             <td>@a.Strasse</td>
             <td>@a.Standplaetze.Count</td>@* TODO optional: viewmodel erstellen um Standplätze frei und belegt anzuzeigen *@ 
-            <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToStandortEdit(a.Id)))">Bearbeiten</button></td>
-            <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteStandort(a.Id)))">Löschen</button></td>
+            <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToStandortEdit(a.Id)))">Bearbeiten</button></td>
+            <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteStandort(a.Id)))">Löschen</button></td>
         </tr>
         }
 

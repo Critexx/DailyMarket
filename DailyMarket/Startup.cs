@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DailyMarket.Data;
 using DailyMarketData.Repositorys;
 using DailyMarketData;
 using Microsoft.EntityFrameworkCore;
@@ -48,10 +47,10 @@ namespace DailyMarket
         
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddTransient<AnbieterRepository>();
             services.AddTransient<AbotypRepository>();
             services.AddTransient<MitarbeiterRepository>();
+            services.AddTransient<PendenzRepository>();
             services.AddTransient<StandortRepository>();
             services.AddTransient<MitgliedsanforderungRepository>();
         }

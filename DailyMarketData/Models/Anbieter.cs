@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DailyMarketData.Models
 {
@@ -10,6 +11,7 @@ namespace DailyMarketData.Models
             Mietvertrag = new HashSet<Mietvertrag>();
             MitgliedsanforderungAnbieter = new HashSet<MitgliedsanforderungAnbieter>();
             Pendenz = new HashSet<Pendenz>();
+            Fullname = $"{Vorname} {Nachname}";
         }
 
         public int Id { get; set; }
@@ -20,6 +22,8 @@ namespace DailyMarketData.Models
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
+        [NotMapped]
+        public string Fullname { get; set; }
 
         public virtual ICollection<Mietvertrag> Mietvertrag { get; set; }
         public virtual ICollection<MitgliedsanforderungAnbieter> MitgliedsanforderungAnbieter { get; set; }

@@ -1,5 +1,26 @@
 ﻿@page "/"
+@using DailyMarketData.Repositorys
+@using Microsoft.AspNetCore.Components
 
-<h1>Hello, world!</h1>
+@inject PendenzRepository PendenzRepo
 
-Welcome to your new app.
+<h1>DailyMarket</h1>
+
+<p>Willkommen bei DailyMarket.</p>
+<p>Aktuell sind @anzahlPendenzen Pendenzen zu bearbeiten.</p>
+
+@code {
+    private DailyMarketData.Models.Pendenz Pendenz { get; set; } = new DailyMarketData.Models.Pendenz();
+
+    private int anzahlPendenzen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<DailyMarketData.Models.Pendenz> pendenzen = await PendenzRepo.GetPendenzAsync();
+        if (pendenzen.Any())
+        {
+            anzahlPendenzen = pendenzen.Count(p => p.IsOffen);
+        }
+    }
+
+}

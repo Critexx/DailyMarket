@@ -19,6 +19,7 @@
                 <th>Bezeichnung</th>
                 <th>Gültigkeit in Tage</th>
                 <th>Beschreibung</th>
+                <th class="alignCenter"><span class="oi oi-delete"></span></th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,7 @@
                     <td><InputText id="Bezeichnung" @bind-Value="@mitgliedsanforderung.Bezeichnung" /></td>
                     <td><InputNumber id="Gueltigkeitsdauer" @bind-Value="@mitgliedsanforderung.Gueltigkeitsdauer" /></td>
                     <td><InputText id="Beschreibung" @bind-Value="@mitgliedsanforderung.Beschreibung" /></td>
-                    <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitgliedsanforderung(mitgliedsanforderung.Id)))">Löschen</button></td>
+                    <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitgliedsanforderung(mitgliedsanforderung.Id)))">Löschen</button></td>
                 </tr>
             }
 

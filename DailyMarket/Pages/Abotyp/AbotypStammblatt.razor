@@ -17,7 +17,7 @@
             <th>RabattInProzent</th>
             <th>Gültig von</th>
             <th>Gültig bis</th>
-            <th>Detail</th>
+            <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
             <td>@a.RabattInProzent</td>
             <td>@a.GueltigVon</td>
             <td>@a.GueltigBis</td>
-            <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAbotypDetail(a.Id)))">Detail</button></td>
+            <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAbotypDetail(a.Id)))">Detail</button></td>
         </tr>
         }
 
@@ -39,7 +39,7 @@
 <button class="btn btn-primary" @onclick="NavigateToAbotypCreate">Neuer Abotyp</button>
 
 @code {
-    protected List<Abotyp> AbotypList { get; set; }
+    protected List<Abotyp> AbotypList { get; set; } = new List<Abotyp>();
 
     protected override async Task OnInitializedAsync()
     {

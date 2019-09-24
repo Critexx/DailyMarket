@@ -15,6 +15,8 @@
             <th>Vorname</th>
             <th>Nachname</th>
             <th>Stundensatz</th>
+            <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
+            <th class="alignCenter"><span class="oi oi-delete"></span></th>
         </tr>
     </thead>
     <tbody>
@@ -25,8 +27,8 @@
                 <td>@a.Vorname</td>
                 <td>@a.Nachname</td>
                 <td>@a.Stundensatz</td>
-                <td><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToMitarbeiterEdit(a.Id)))">Bearbeiten</button></td>
-                <td><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitarbeiter(a.Id)))">Löschen</button></td>
+                <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToMitarbeiterEdit(a.Id)))">Bearbeiten</button></td>
+                <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitarbeiter(a.Id)))">Löschen</button></td>
             </tr>
         }
 
@@ -35,7 +37,7 @@
 <button class="btn btn-primary" @onclick="NavigateToMitarbeiterCreate">Neuer Mitarbeiter</button>
 
 @code {
-    protected List<Mitarbeiter> MitarbeiterList { get; set; }
+    protected List<Mitarbeiter> MitarbeiterList { get; set; } = new List<Mitarbeiter>();
 
     protected override async Task OnInitializedAsync()
     {

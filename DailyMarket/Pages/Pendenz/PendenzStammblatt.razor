@@ -1,0 +1,64 @@
+﻿@page "/pendenz"
+
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using System.Reflection.Metadata
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@inject PendenzRepository PendenzRepo
+
+<h3>Pendenz</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Anbieter</th>
+            <th>Pendenz offen</th>
+            <th>Erstellt</th>
+            <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Pendenz pendenz in PendenzList)
+        {
+        <tr>
+            <td>@pendenz.Titel</td>
+            <td>@pendenz.Anbieter?.Vorname @pendenz.Anbieter?.Nachname</td>
+            <td>@pendenz.IsOffen</td>
+            <td>@pendenz.CreatedAt</td>
+            <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToPendenzEdit(pendenz.Id)))">Detail</button></td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="NavigateToPendenzCreate">Neue Pendenz</button>
+
+@code {
+    protected List<Pendenz> PendenzList { get; set; } = new List<Pendenz>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PendenzList = await PendenzRepo.GetPendenzAsync();
+    }
+
+    void DeletePendenz(int id)
+    {
+        PendenzRepo.DeletePendenzAsync(id);
+        Pendenz removePendenz = PendenzList.SingleOrDefault(x => x.Id == id);
+        if (removePendenz != null)
+        {
+            PendenzList.Remove(removePendenz);
+        }
+    }
+
+    void NavigateToPendenzEdit(int id)
+    {
+        NavigationManager.NavigateTo($"pendenz/{id}");
+    }
+
+    void NavigateToPendenzCreate()
+    {
+        NavigationManager.NavigateTo("pendenz/create");
+    }
+}

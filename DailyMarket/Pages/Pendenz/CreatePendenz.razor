@@ -1,0 +1,138 @@
+﻿@page "/pendenz/create"
+@page "/pendenz/{Id:int}"
+
+@inject NavigationManager NavigationManager
+@inject PendenzRepository PendenzRepo
+@inject AnbieterRepository AnbieterRepo
+
+@using System.Security.Claims
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>@title</h3>
+
+<EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (Id.HasValue)
+    {
+        <p>
+            <label>Titel: </label>
+            <label>@Pendenz.Titel</label>
+        </p>
+        <p>
+            <label>Anbieter: </label>
+            <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
+        </p>
+        <p>
+            <label>Pendenz offen: </label>
+            @if (Pendenz.IsOffen)
+            {
+                <label>Offen</label>
+            }
+            else
+            {
+                <label>Abgeschlossen</label>
+            }
+        </p>
+        <p>
+            <label>Erstellt am: </label>
+            <label>@Pendenz.CreatedAt</label>
+        </p>
+        <p>
+            <label>Beschreibung: </label>
+            <textarea>@Pendenz.Beschreibung</textarea>
+        </p>
+        @if (Pendenz.IsOffen)
+        {
+            <button class="btn btn-primary" type="submit">@submitBtnText</button>
+        }
+    }
+    else
+    {
+        <p>
+            <label for="Titel">Titel: </label>
+            <InputText id="Titel" @bind-Value="@Pendenz.Titel" />
+        </p>
+        <select class="form-control" @onchange="@SelectClicked">
+            @foreach (var anbieter in AnbieterList)
+            {
+                <option value="@anbieter.Id">@anbieter.Vorname</option>
+            }
+        </select>
+        <button class="btn btn-primary" type="submit">@submitBtnText</button>
+    }
+
+    <button class="btn btn-success" @onclick="NavigateToRapport">Rapport</button>
+    <button class="btn btn-danger" @onclick="NavigateToPendenz">Abbrechen</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Pendenz Pendenz { get; set; } = new Pendenz();
+
+    private List<Anbieter> AnbieterList { get; set; } = new List<Anbieter>();
+
+    private string title;
+
+    private string submitBtnText;
+
+    private string anbieterName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AnbieterList.AddRange(await AnbieterRepo.GetAnbieterAsync());
+        if (Id.HasValue)
+        {
+            Pendenz = await PendenzRepo.GetPendenzAsync(Id.Value);
+            Pendenz.Anbieter.Fullname = $"{Pendenz.Anbieter.Vorname} {Pendenz.Anbieter.Nachname}";
+            title = "Pendenz Detail";
+            submitBtnText = "Pendenz abschliessen";
+        }
+        else
+        {
+            title = "Neuer Pendenz erfassen";
+            submitBtnText = "Pendenz erfassen";
+        }
+    }
+
+    protected void SelectClicked(ChangeEventArgs e)
+    {
+        Pendenz.AnbieterId = int.Parse(e.Value.ToString());
+    }
+
+    private async Task SavePendenz()
+    {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
+        if (Id.HasValue)
+        {
+            Pendenz.UpdatedBy = user.Identity.Name;
+            PendenzRepo.UpdatePendenz(Pendenz);
+        }
+        else
+        {
+            Pendenz.CreatedBy = user.Identity.Name;
+            PendenzRepo.CreatePendenz(Pendenz);
+        }
+        NavigateToPendenz();
+    }
+
+    private void NavigateToPendenz()
+    {
+        NavigationManager.NavigateTo("pendenz");
+    }
+
+    private void NavigateToRapport()
+    {
+        NavigationManager.NavigateTo($"rapport/{Pendenz.Id}");
+    }
+
+}

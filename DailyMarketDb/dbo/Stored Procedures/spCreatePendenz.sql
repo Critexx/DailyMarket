@@ -25,7 +25,7 @@ BEGIN
 
 	WHILE @cnt <= @AmountPendenzenToAdd
 	BEGIN
-	   INSERT INTO Pendenz (AnbieterId, MitgliedsanforderungId, Titel, Beschreibung, Status, CreatedAt, CreatedBy) 
+	   INSERT INTO Pendenz (AnbieterId, MitgliedsanforderungId, Titel, Beschreibung, IsOffen, CreatedAt, CreatedBy) 
 			SELECT @AnbieterId, Id, 'Mitgliedsprüfung: "'+Bezeichnung+'"', Beschreibung, 1, GETDATE(), 'Initial Pendenz' FROM @PendenzToAdd where rownumber = @cnt
 
 	   SET @anforderung = (SELECT Bezeichnung FROM @PendenzToAdd where rownumber = @cnt);
