@@ -11,8 +11,10 @@
     [UpdatedBy]              VARCHAR (50)  NULL,
     CONSTRAINT [PK_Pendenz] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Pendenz_Anbieter] FOREIGN KEY ([AnbieterId]) REFERENCES [dbo].[Anbieter] ([Id]),
-    CONSTRAINT [FK_Pendenz_Mitgliedsanforderung] FOREIGN KEY ([MitgliedsanforderungId]) REFERENCES [dbo].[Mitgliedsanforderung] ([Id])
+    CONSTRAINT [FK_Pendenz_Mitgliedsanforderung] FOREIGN KEY ([MitgliedsanforderungId]) REFERENCES [dbo].[Mitgliedsanforderung] ([Id]) ON DELETE SET NULL
 );
+
+
 
 
 

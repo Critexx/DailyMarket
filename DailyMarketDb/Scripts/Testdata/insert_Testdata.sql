@@ -32,3 +32,15 @@ INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, 
 VALUES ('Gold Abonnement', 'Miete an einem Standort für 12 Monate', 365, 1, GETDATE(), NULL, 15, GETDATE(), 'initial deploy');
 INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
 VALUES ('Platin Abonnement', 'Miete an 3 Standorten für 6 Monate', 182, 3, GETDATE(), NULL, 20, GETDATE(), 'initial deploy');
+
+--Mitgliedsanforderung
+INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
+VALUES ('Erklärungsunterschrift', 'Unterschrift der DailyMarket Mitgliedserklärung', NULL, GETDATE(), 'initial deploy');
+INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
+VALUES ('Bonitätsprüfung', 'Durchführung einer einfachen Bonitätsprüfung', NULL, GETDATE(), 'initial deploy');
+INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
+VALUES ('Persönlicher Besucht', 'Einen persönlichen Besuch beim Anbieter', NULL, GETDATE(), 'initial deploy');
+INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
+VALUES ('1. Q-Check', 'Erstmaliger Check durch einen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
+INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
+VALUES ('2. Q-Check', 'Zweiter Check durch einen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
