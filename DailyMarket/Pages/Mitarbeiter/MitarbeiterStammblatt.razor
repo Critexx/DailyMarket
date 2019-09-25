@@ -2,8 +2,10 @@
 
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using System.Reflection.Metadata
+@using System.Security.Claims
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
 @inject MitarbeiterRepository MitarbeiterRepo
 
 <h3>Mitarbeiter</h3>
@@ -11,7 +13,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>Aktiv</th>
             <th>Vorname</th>
             <th>Nachname</th>
             <th>Stundensatz</th>
@@ -20,15 +22,28 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var a in MitarbeiterList)
+        @foreach (Mitarbeiter mitarbeiter in MitarbeiterList.OrderByDescending(m => m.IsActive).ThenBy(m => m.Vorname))
         {
             <tr>
-                <td>@a.Id</td>
-                <td>@a.Vorname</td>
-                <td>@a.Nachname</td>
-                <td>@a.Stundensatz</td>
-                <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToMitarbeiterEdit(a.Id)))">Bearbeiten</button></td>
-                <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteMitarbeiter(a.Id)))">Löschen</button></td>
+                @if (mitarbeiter.IsActive)
+                {
+                    <td>Ja</td>
+                } else
+                {
+                    <td>Nein</td>
+                }
+                <td>@mitarbeiter.Vorname</td>
+                <td>@mitarbeiter.Nachname</td>
+                <td>@mitarbeiter.Stundensatz</td>
+                <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToMitarbeiterEdit(mitarbeiter.Id)))">Bearbeiten</button></td>
+                @if (mitarbeiter.IsActive)
+                {
+                    <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( async ()=> await EditActive(mitarbeiter.Id)))">Deaktivieren</button></td>
+                }
+                else
+                {
+                    <td class="alignCenter"><button class="btn btn-success" @onclick="@(new Action( async ()=> await EditActive(mitarbeiter.Id)))">Aktivieren</button></td>
+                }
             </tr>
         }
 
@@ -39,19 +54,23 @@
 @code {
     protected List<Mitarbeiter> MitarbeiterList { get; set; } = new List<Mitarbeiter>();
 
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         MitarbeiterList = await MitarbeiterRepo.GetMitarbeiterAsync();
     }
 
-    void DeleteMitarbeiter(int id)
+    private async Task EditActive(int id)
     {
-        MitarbeiterRepo.DeleteMitarbeiterAsync(id);
-        Mitarbeiter removeMitarbeiter = MitarbeiterList.SingleOrDefault(x => x.Id == id);
-        if (removeMitarbeiter != null)
-        {
-            MitarbeiterList.Remove(removeMitarbeiter);
-        }
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
+        Mitarbeiter mitarbeiter = MitarbeiterList.Single(m => m.Id == id);
+        mitarbeiter.IsActive = !mitarbeiter.IsActive;
+        mitarbeiter.UpdatedBy = user.Identity.Name;
+
+        MitarbeiterRepo.UpdateMitarbeiter(mitarbeiter);
     }
 
     void NavigateToMitarbeiterEdit(int id)

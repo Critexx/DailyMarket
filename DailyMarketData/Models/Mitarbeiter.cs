@@ -14,6 +14,7 @@ namespace DailyMarketData.Models
         public string Vorname { get; set; }
         public string Nachname { get; set; }
         public decimal Stundensatz { get; set; }
+        public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

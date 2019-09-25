@@ -1,14 +1,14 @@
 ﻿-- Mitarbeiter
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Pascal', 'Schaffner', 220, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Vincent', 'Ptak', 280, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Luca', 'Weber', 190, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Andreas', 'Hofstetter', 140, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('jasmin', 'Küngel', 230, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Tamara', 'Schmid', 170, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Sandra', 'Keller', 155, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Laura', 'Galli', 110, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Marco', 'Meier', 90, GETDATE(), 'initial deploy');
-INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, CreatedAt, CreatedBy) VALUES ('Urs', 'Müller', 225, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Pascal', 'Schaffner', 220, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Vincent', 'Ptak', 280, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Luca', 'Weber', 190, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Andreas', 'Hofstetter', 140, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('jasmin', 'Küngel', 230, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Tamara', 'Schmid', 170, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Sandra', 'Keller', 155, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Laura', 'Galli', 110, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Marco', 'Meier', 90, 1, GETDATE(), 'initial deploy');
+INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Urs', 'Müller', 225, 1, GETDATE(), 'initial deploy');
 
 -- Anbieter
 INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Max', 'Muster', 0, GETDATE(), 'initial deploy');
