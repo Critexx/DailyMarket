@@ -80,7 +80,4 @@
     <None Include="Scripts\Testdata\insert_Testdata.sql" />
     <Build Include="dbo\Stored Procedures\spCreatePendenz.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Scripts\Testdata\Testdata_Anbieter.sql" />
-  </ItemGroup>
 </Project>
