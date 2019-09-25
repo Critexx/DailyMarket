@@ -52,6 +52,7 @@ namespace DailyMarket
             services.AddTransient<MitarbeiterRepository>();
             services.AddTransient<PendenzRepository>();
             services.AddTransient<StandortRepository>();
+            services.AddTransient<RapportRepository>();
             services.AddTransient<MitgliedsanforderungRepository>();
         }
 

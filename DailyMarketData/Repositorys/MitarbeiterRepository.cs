@@ -22,9 +22,9 @@ namespace DailyMarketData.Repositorys
             return Task.FromResult(db.Mitarbeiter.ToList());
         }
 
-        public Task<Mitarbeiter> GetMitarbeiterAsync(int Id)
+        public Task<Mitarbeiter> GetMitarbeiterAsync(int id)
         {
-            return Task.FromResult(db.Mitarbeiter.Find(Id));
+            return Task.FromResult(db.Mitarbeiter.Find(id));
         }
 
         public void DeleteMitarbeiterAsync(int id)
@@ -37,18 +37,18 @@ namespace DailyMarketData.Repositorys
             }
         }
 
-        public void CreateMitarbeiter(Mitarbeiter Mitarbeiter)
+        public void CreateMitarbeiter(Mitarbeiter mitarbeiter)
         {
-            Mitarbeiter.CreatedAt = DateTime.Now;
-            db.Mitarbeiter.Add(Mitarbeiter);
+            mitarbeiter.CreatedAt = DateTime.Now;
+            db.Mitarbeiter.Add(mitarbeiter);
             db.SaveChanges();
         }
 
-        public void UpdateMitarbeiter(Mitarbeiter Mitarbeiter)
+        public void UpdateMitarbeiter(Mitarbeiter mitarbeiter)
         {
-            if(Mitarbeiter == null) return;
-            Mitarbeiter.UpdatedAt = DateTime.Now;
-            db.Mitarbeiter.Update(Mitarbeiter);
+            if(mitarbeiter == null) return;
+            mitarbeiter.UpdatedAt = DateTime.Now;
+            db.Mitarbeiter.Update(mitarbeiter);
             db.SaveChanges();
         }
     }

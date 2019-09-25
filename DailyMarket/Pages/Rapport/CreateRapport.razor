@@ -1,0 +1,96 @@
+﻿@page "/rapport/{PendenzId:int}"
+
+@inject NavigationManager NavigationManager
+@inject RapportRepository RapportRepo
+@inject PendenzRepository PendenzRepo
+@inject MitarbeiterRepository MitarbeiterRepo
+
+@using System.Security.Claims
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>@title</h3>
+
+<EditForm Model="@Rapport" OnValidSubmit="@SaveRapport">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>
+            <label>Pendenz: </label>
+            <label>@Pendenz.Titel</label>
+        </p>
+        <p>
+            <label>Mitarbeiter: </label>
+            <select class="form-control" @onchange="@SelectClicked">
+                @foreach (Mitarbeiter mitarbeiter in MitarbeiterList)
+                {
+                    <option value="@mitarbeiter.Id">@mitarbeiter.Vorname @mitarbeiter.Nachname</option>
+                }
+            </select>
+        </p>
+        <p>
+            <label for="Datum">Datum: </label>
+            <InputDate id="Datum" @bind-Value="@Rapport.Datum" />
+        </p>
+        <p>
+            <label for="Beschreibung">Beschreibung: </label>
+            <InputTextArea id="Beschreibung" @bind-Value="@Rapport.Beschreibung" />
+        </p>
+        <p>
+            <label for="Aufwand">Aufwand: </label>
+            <InputNumber id="Aufwand" @bind-Value="@Rapport.Aufwand" />
+        </p>
+
+        <button class="btn btn-primary" type="submit">@submitBtnText</button>
+        
+    </EditForm>
+    <button class="btn btn-danger" @onclick="NavigateToPendenz">Abbrechen</button>
+
+@code {
+    [Parameter]
+    public int PendenzId { get; set; }
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Rapport Rapport { get; set; } = new Rapport();
+    private Pendenz Pendenz { get; set; } = new Pendenz();
+
+    private List<Mitarbeiter> MitarbeiterList { get; set; } = new List<Mitarbeiter>();
+
+    private string title;
+
+    private string submitBtnText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        MitarbeiterList.AddRange(await MitarbeiterRepo.GetMitarbeiterAsync());
+        Pendenz = await PendenzRepo.GetPendenzAsync(PendenzId);
+        title = "Rapport erfassen";
+        submitBtnText = "Rapport erfassen";
+    }
+
+    protected void SelectClicked(ChangeEventArgs e)
+    {
+        Rapport.MitarbeiterId = int.Parse(e.Value.ToString());
+    }
+
+    private async Task SaveRapport()
+    {
+        Rapport.PendenzId = PendenzId;
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+        Rapport.CreatedBy = user.Identity.Name;
+
+        Mitarbeiter mitarbeiter = await MitarbeiterRepo.GetMitarbeiterAsync(Rapport.MitarbeiterId);
+        Rapport.Stundensatz = mitarbeiter.Stundensatz;
+        RapportRepo.CreateRapport(Rapport);
+        NavigateToPendenz();
+    }
+
+    private void NavigateToPendenz()
+    {
+        NavigationManager.NavigateTo($"pendenz/{PendenzId}");
+    }
+
+}
