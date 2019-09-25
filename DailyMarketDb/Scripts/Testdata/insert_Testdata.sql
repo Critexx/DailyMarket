@@ -29,6 +29,6 @@ INSERT INTO Standplatz (StandortId, PreisProTag, CreatedAt, CreatedBy) VALUES (1
 INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
 VALUES ('Silver Abonnement', 'Miete an einem Standort für 6 Monate', 182, 1, GETDATE(), NULL, 10, GETDATE(), 'initial deploy');
 INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
-VALUES ('Gold Abonnement', 'Miete an einem Standort für 12 Monate', 364, 1, GETDATE(), NULL, 15, GETDATE(), 'initial deploy');
+VALUES ('Gold Abonnement', 'Miete an einem Standort für 12 Monate', 365, 1, GETDATE(), NULL, 15, GETDATE(), 'initial deploy');
 INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
 VALUES ('Platin Abonnement', 'Miete an 3 Standorten für 6 Monate', 182, 3, GETDATE(), NULL, 20, GETDATE(), 'initial deploy');
