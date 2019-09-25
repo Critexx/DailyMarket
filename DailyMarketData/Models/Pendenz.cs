@@ -15,7 +15,7 @@ namespace DailyMarketData.Models
         public int? MitgliedsanforderungId { get; set; }
         public string Titel { get; set; }
         public string Beschreibung { get; set; }
-        public bool IsOffen { get; set; }
+        public bool IsOffen { get; set; } = true;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

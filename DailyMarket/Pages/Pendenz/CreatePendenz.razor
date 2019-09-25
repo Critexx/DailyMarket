@@ -9,81 +9,118 @@
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Rendering
 
 <h3>@title</h3>
 
-<EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+@if (Pendenz == null)
+{
+    <p>loading...</p>
+}
+else
+{
+    <EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        @if (Id.HasValue)
+        {
+            <p>
+                <label>Titel: </label>
+                <label>@Pendenz.Titel</label>
+            </p>
+            <p>
+                <label>Anbieter: </label>
+                <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
+            </p>
+            <p>
+                <label>Pendenz Status: </label>
+                @if (Pendenz.IsOffen)
+                {
+                    <label>Offen</label>
+                }
+                else
+                {
+                    <label>Abgeschlossen</label>
+                }
+            </p>
+            <p>
+                <label>Erstellt am: </label>
+                <label>@Pendenz.CreatedAt</label>
+            </p>
+            <p>
+                <label>Beschreibung: </label>
+                <p>@Pendenz.Beschreibung</p>
+            </p>
+        }
+        else
+        {
+            <p>
+                <label for="Titel">Titel: </label>
+                <InputText id="Titel" @bind-Value="@Pendenz.Titel"/>
+                           </p>
+            <select class="form-control" @onchange="@SelectClicked">
+                        @foreach (Anbieter anbieter in AnbieterList)
+                        {
+                            <option value="@anbieter.Id">@anbieter.Vorname @anbieter.Nachname</option>
+                        }
+                    </select>
+            <p>
+                <label for="Beschreibung">Beschreibung: </label>
+                <InputTextArea id="Beschreibung" @bind-Value="@Pendenz.Beschreibung"/>
+                               </p>
+            <button class="btn btn-primary" type="submit">Pendenz erfassen</button>
+        }
+    </EditForm>
+
+    <button class="btn btn-danger" @onclick="NavigateToPendenz">@cancelButton</button>
+    @if (Id.HasValue && Pendenz.IsOffen)
+    {
+        <button class="btn btn-primary" @onclick="NavigateToRapport">Rapport erfassen</button>
+        <button class="btn btn-success" @onclick="ClosePendenz">Pendenz abschliessen</button>
+    }
 
     @if (Id.HasValue)
     {
-        <p>
-            <label>Titel: </label>
-            <label>@Pendenz.Titel</label>
-        </p>
-        <p>
-            <label>Anbieter: </label>
-            <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
-        </p>
-        <p>
-            <label>Pendenz offen: </label>
-            @if (Pendenz.IsOffen)
+        <h4>Rapport</h4>
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Mitarbeiter</th>
+                <th>Beschreibung</th>
+                <th>Aufwand</th>
+                <th>Stundensatz</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (Rapport rapport in Pendenz.Rapport.OrderBy(r => r.Datum))
             {
-                <label>Offen</label>
+                <tr>
+                    <td>@rapport.Datum</td>
+                    <td>@rapport.Mitarbeiter.Vorname @rapport.Mitarbeiter.Nachname</td>
+                    <td>@rapport.Beschreibung</td>
+                    <td>@rapport.Aufwand</td>
+                    <td>CHF @rapport.Stundensatz</td>
+                </tr>
             }
-            else
-            {
-                <label>Abgeschlossen</label>
-            }
-        </p>
-        <p>
-            <label>Erstellt am: </label>
-            <label>@Pendenz.CreatedAt</label>
-        </p>
-        <p>
-            <label>Beschreibung: </label>
-            <textarea>@Pendenz.Beschreibung</textarea>
-        </p>
-        @if (Pendenz.IsOffen)
-        {
-            <button class="btn btn-primary" type="submit">@submitBtnText</button>
-        }
+            </tbody>
+        </table>
     }
-    else
-    {
-        <p>
-            <label for="Titel">Titel: </label>
-            <InputText id="Titel" @bind-Value="@Pendenz.Titel" />
-        </p>
-        <select class="form-control" @onchange="@SelectClicked">
-            @foreach (var anbieter in AnbieterList)
-            {
-                <option value="@anbieter.Id">@anbieter.Vorname</option>
-            }
-        </select>
-        <button class="btn btn-primary" type="submit">@submitBtnText</button>
-    }
-
-</EditForm>
-<button class="btn btn-success" @onclick="NavigateToRapport">Rapport</button>
-<button class="btn btn-danger" @onclick="NavigateToPendenz">Abbrechen</button>
-
+}
 @code {
     [Parameter]
     public int? Id { get; set; }
 
     [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    private Pendenz Pendenz { get; set; } = new Pendenz();
+    private Pendenz Pendenz { get; set; }
 
     private List<Anbieter> AnbieterList { get; set; } = new List<Anbieter>();
 
     private string title;
 
-    private string submitBtnText;
-
-    private string anbieterName;
+    private string cancelButton;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,19 +129,31 @@
         {
             Pendenz = await PendenzRepo.GetPendenzAsync(Id.Value);
             Pendenz.Anbieter.Fullname = $"{Pendenz.Anbieter.Vorname} {Pendenz.Anbieter.Nachname}";
-            title = "Pendenz Detail";
-            submitBtnText = "Pendenz abschliessen";
         }
         else
         {
-            title = "Neuer Pendenz erfassen";
-            submitBtnText = "Pendenz erfassen";
+            Pendenz = new Pendenz();
         }
+        UpdateButtonText();
     }
 
     protected void SelectClicked(ChangeEventArgs e)
     {
         Pendenz.AnbieterId = int.Parse(e.Value.ToString());
+    }
+
+    private void UpdateButtonText()
+    {
+        if (Id.HasValue)
+        {
+            title = "Pendenz Detail";
+            cancelButton = "Zurück";
+        }
+        else
+        {
+            title = "Neue Pendenz erfassen";
+            cancelButton = "Abbrechen";
+        }
     }
 
     private async Task SavePendenz()
@@ -122,7 +171,12 @@
             Pendenz.CreatedBy = user.Identity.Name;
             PendenzRepo.CreatePendenz(Pendenz);
         }
-        NavigateToPendenz();
+
+        // Aus irgendeinem Grund wird beim NavigateTo() der Event OnInitializedAsync() nicht getriggert,
+        // deshalb müssen Titel und Button manuell geupdatet werden.
+        title = "Pendenz Detail";
+        cancelButton = "Zurück";
+        NavigationManager.NavigateTo($"pendenz/{Pendenz.Id}");
     }
 
     private void NavigateToPendenz()
@@ -135,4 +189,9 @@
         NavigationManager.NavigateTo($"rapport/{Pendenz.Id}");
     }
 
+    private async Task ClosePendenz()
+    {
+        Pendenz.IsOffen = false;
+        await SavePendenz();
+    }
 }

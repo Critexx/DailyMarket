@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyMarketData.Repositorys
 {
@@ -23,7 +24,7 @@ namespace DailyMarketData.Repositorys
 
         public Task<Pendenz> GetPendenzAsync(int id)
         {
-            return Task.FromResult(db.Pendenz.Find(id));
+            return db.Pendenz.Include(p => p.Rapport).ThenInclude(r => r.Mitarbeiter).SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public void DeletePendenzAsync(int id)

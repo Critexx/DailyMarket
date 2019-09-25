@@ -11,21 +11,28 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Status</th>
+            <th>Erstellt</th>
             <th>Titel</th>
             <th>Anbieter</th>
-            <th>Pendenz offen</th>
-            <th>Erstellt</th>
             <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (Pendenz pendenz in PendenzList)
+        @foreach (Pendenz pendenz in PendenzList.OrderByDescending(p => p.IsOffen).ThenBy(p => p.CreatedAt))
         {
         <tr>
+            @if (pendenz.IsOffen)
+            {
+                <td>Offen</td>
+            }
+            else
+            {
+                <td>Abgeschlossen</td>
+            }
+            <td>@pendenz.CreatedAt</td>
             <td>@pendenz.Titel</td>
             <td>@pendenz.Anbieter?.Vorname @pendenz.Anbieter?.Nachname</td>
-            <td>@pendenz.IsOffen</td>
-            <td>@pendenz.CreatedAt</td>
             <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToPendenzEdit(pendenz.Id)))">Detail</button></td>
         </tr>
         }

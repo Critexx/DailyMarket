@@ -31,14 +31,14 @@
         </p>
         <p>
             <label for="Datum">Datum: </label>
-            <InputDate id="Datum" @bind-Value="@Rapport.Datum" />
+            <InputDate id="Datum" @bind-Value="@Rapport.Datum" @bind-Value:format="dd.MM.yyyy"/>
         </p>
         <p>
             <label for="Beschreibung">Beschreibung: </label>
             <InputTextArea id="Beschreibung" @bind-Value="@Rapport.Beschreibung" />
         </p>
         <p>
-            <label for="Aufwand">Aufwand: </label>
+            <label for="Aufwand">Aufwand in h: </label>
             <InputNumber id="Aufwand" @bind-Value="@Rapport.Aufwand" />
         </p>
 
@@ -65,6 +65,16 @@
     protected override async Task OnInitializedAsync()
     {
         MitarbeiterList.AddRange(await MitarbeiterRepo.GetMitarbeiterAsync());
+        Mitarbeiter mitarbeiter = MitarbeiterList.FirstOrDefault();
+        if (mitarbeiter == null)
+        {
+            // TODO: Message ausgeben, dass zuerst ein Mitarbeiter erfasst werden muss.
+        }
+        else
+        {
+            Rapport.MitarbeiterId = mitarbeiter.Id;
+        }
+        
         Pendenz = await PendenzRepo.GetPendenzAsync(PendenzId);
         title = "Rapport erfassen";
         submitBtnText = "Rapport erfassen";

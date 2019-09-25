@@ -8,7 +8,7 @@ namespace DailyMarketData.Models
         public int Id { get; set; }
         public int MitarbeiterId { get; set; }
         public int PendenzId { get; set; }
-        public DateTime Datum { get; set; }
+        public DateTime Datum { get; set; } = DateTime.Today;
         public string Beschreibung { get; set; }
         public decimal Aufwand { get; set; }
         public decimal Stundensatz { get; set; }
