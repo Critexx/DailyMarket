@@ -22,7 +22,7 @@
         </p>
         <p>
             <label>Mitarbeiter: </label>
-            <select class="form-control" @onchange="@SelectClicked">
+            <select class="form-control selectWidth" @onchange="@SelectClicked">
                 @foreach (Mitarbeiter mitarbeiter in MitarbeiterList)
                 {
                     <option value="@mitarbeiter.Id">@mitarbeiter.Vorname @mitarbeiter.Nachname</option>

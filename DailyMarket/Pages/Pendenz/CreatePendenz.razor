@@ -19,59 +19,59 @@
 }
 else
 {
-    <EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
+<EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-        @if (Id.HasValue)
-        {
-            <p>
-                <label>Titel: </label>
-                <label>@Pendenz.Titel</label>
-            </p>
-            <p>
-                <label>Anbieter: </label>
-                <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
-            </p>
-            <p>
-                <label>Pendenz Status: </label>
-                @if (Pendenz.IsOffen)
-                {
-                    <label>Offen</label>
-                }
-                else
-                {
-                    <label>Abgeschlossen</label>
-                }
-            </p>
-            <p>
-                <label>Erstellt am: </label>
-                <label>@Pendenz.CreatedAt</label>
-            </p>
-            <p>
-                <label>Beschreibung: </label>
-                <p>@Pendenz.Beschreibung</p>
-            </p>
-        }
-        else
-        {
-            <p>
-                <label for="Titel">Titel: </label>
-                <InputText id="Titel" @bind-Value="@Pendenz.Titel"/>
-                           </p>
-            <select class="form-control" @onchange="@SelectClicked">
-                        @foreach (Anbieter anbieter in AnbieterList)
-                        {
-                            <option value="@anbieter.Id">@anbieter.Vorname @anbieter.Nachname</option>
-                        }
-                    </select>
-            <p>
-                <label for="Beschreibung">Beschreibung: </label>
-                <InputTextArea id="Beschreibung" @bind-Value="@Pendenz.Beschreibung"/>
-                               </p>
-            <button class="btn btn-primary" type="submit">Pendenz erfassen</button>
-        }
-    </EditForm>
+    @if (Id.HasValue)
+    {
+        <p>
+            <label>Titel: </label>
+            <label>@Pendenz.Titel</label>
+        </p>
+        <p>
+            <label>Anbieter: </label>
+            <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
+        </p>
+        <p>
+            <label>Pendenz Status: </label>
+            @if (Pendenz.IsOffen)
+            {
+                <label>Offen</label>
+            }
+            else
+            {
+                <label>Abgeschlossen</label>
+            }
+        </p>
+        <p>
+            <label>Erstellt am: </label>
+            <label>@Pendenz.CreatedAt</label>
+        </p>
+        <p>
+            <label>Beschreibung: </label>
+        <p>@Pendenz.Beschreibung</p>
+        </p>
+    }
+    else
+    {
+        <p>
+            <label for="Titel">Titel: </label>
+            <InputText id="Titel" @bind-Value="@Pendenz.Titel" />
+        </p>
+        <select class="form-control selectWidth mb-3" @onchange="@SelectClicked">
+            @foreach (Anbieter anbieter in AnbieterList)
+            {
+                <option value="@anbieter.Id">@anbieter.Vorname @anbieter.Nachname</option>
+            }
+        </select>
+        <label for="Beschreibung">Beschreibung: </label>
+        <p>
+            <InputTextArea id="Beschreibung" @bind-Value="@Pendenz.Beschreibung" />
+        </p>
+        <button class="btn btn-primary" type="submit">Pendenz erfassen</button>
+    }
+</EditForm>
 
     <button class="btn btn-danger" @onclick="NavigateToPendenz">@cancelButton</button>
     @if (Id.HasValue && Pendenz.IsOffen)

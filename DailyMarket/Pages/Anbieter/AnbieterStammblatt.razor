@@ -2,6 +2,7 @@
 
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using System.Reflection.Metadata
+@using DailyMarket.constants
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
 @inject AnbieterRepository AnbieterRepo
@@ -13,20 +14,20 @@
         <tr>
             <th>Vorname</th>
             <th>Nachname</th>
-            <th>Mitglied</th>
+            <th>Status</th>
             <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
             <th class="alignCenter"><span class="oi oi-delete"></span></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var a in AnbieterList.OrderByDescending(a => a.IsMitglied).ThenBy(a => a.Vorname))
+        @foreach (Anbieter anbieter in AnbieterList.OrderByDescending(a => a.Status).ThenBy(a => a.Vorname))
         {
             <tr>
-                <td>@a.Vorname</td>
-                <td>@a.Nachname</td>
-                <td>@a.IsMitglied</td>
-                <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAnbieterEdit(a.Id)))">Bearbeiten</button></td>
-                <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteAnbieter(a.Id)))">Löschen</button></td>
+                <td>@anbieter.Vorname</td>
+                <td>@anbieter.Nachname</td>
+                <td>@AnbieterStatus.StatusText.GetValueOrDefault(anbieter.Status)</td>
+                <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAnbieterEdit(anbieter.Id)))">Bearbeiten</button></td>
+                <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteAnbieter(anbieter.Id)))">Löschen</button></td>
             </tr>
         }
 

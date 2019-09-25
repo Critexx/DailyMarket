@@ -29,10 +29,10 @@ namespace DailyMarketData.Repositorys
 
         public void DeleteMitarbeiterAsync(int id)
         {
-            Mitarbeiter Mitarbeiter = db.Mitarbeiter.Find(id);
-            if (Mitarbeiter != null)
+            Mitarbeiter mitarbeiter = db.Mitarbeiter.Find(id);
+            if (mitarbeiter != null)
             {
-                db.Mitarbeiter.Remove(Mitarbeiter);
+                db.Mitarbeiter.Remove(mitarbeiter);
                 db.SaveChanges();
             }
         }

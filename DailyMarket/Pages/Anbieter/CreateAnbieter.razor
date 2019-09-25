@@ -5,6 +5,7 @@
 @inject AnbieterRepository AnbieterRepo
 
 @using System.Security.Claims
+@using DailyMarket.constants
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
 @using Microsoft.AspNetCore.Components
@@ -23,8 +24,12 @@
         <InputText id="nachname" @bind-Value="@Anbieter.Nachname" />
     </p>
     <p>
-        <label for="isMitglied">Mitglied: </label>
-        <InputCheckbox id="isMitglied" @bind-Value="@Anbieter.IsMitglied" />
+        <label>Status: </label>
+        <select class="form-control selectWidth" @onchange="@SelectClicked">
+            <option value="@AnbieterStatus.Neu">@AnbieterStatus.StatusText.GetValueOrDefault(AnbieterStatus.Neu)</option>
+            <option value="@AnbieterStatus.Provisorisch">@AnbieterStatus.StatusText.GetValueOrDefault(AnbieterStatus.Provisorisch)</option>
+            <option value="@AnbieterStatus.Mitglied">@AnbieterStatus.StatusText.GetValueOrDefault(AnbieterStatus.Mitglied)</option>
+        </select>
     </p>
 
     <button class="btn btn-primary" type="submit" >@submitBtnText</button>
@@ -37,7 +42,7 @@
 
     [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    private Anbieter Anbieter { get; set; } = new Anbieter();
+    private Anbieter Anbieter { get; set; } = new Anbieter(){Status = 0};
 
     private string title;
 
@@ -74,6 +79,11 @@
             AnbieterRepo.CreateAnbieter(Anbieter);
         }
         NavigateToAnbieter();
+    }
+
+    private void SelectClicked(ChangeEventArgs e)
+    {
+        Anbieter.Status = int.Parse(e.Value.ToString());
     }
 
     private void NavigateToAnbieter()

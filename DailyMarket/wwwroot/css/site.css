@@ -12,8 +12,18 @@ h4 {
     margin-top: 30px;
 }
 
+textarea {
+    width: 800px;
+    height: 200px;
+    resize: both;
+}
+
 .alignCenter {
     text-align: center;
+}
+
+.selectWidth {
+    width: 200px;
 }
 
 button {

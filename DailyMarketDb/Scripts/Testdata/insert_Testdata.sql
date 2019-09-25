@@ -11,14 +11,14 @@ INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, Cr
 INSERT INTO Mitarbeiter (Vorname, Nachname, Stundensatz, IsActive, CreatedAt, CreatedBy) VALUES ('Urs', 'Müller', 225, 1, GETDATE(), 'initial deploy');
 
 -- Anbieter
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Max', 'Muster', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Dominik', 'Sky', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Claire', 'Wyss', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Alfredo', 'Steiner', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Antonio', 'Giovanni', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Mario', 'Lombard', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Luigi', 'Bernasconi', 0, GETDATE(), 'initial deploy');
-INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Camille', 'Ferrière', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Max', 'Muster', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Dominik', 'Sky', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Claire', 'Wyss', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Alfredo', 'Steiner', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Antonio', 'Giovanni', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Mario', 'Lombard', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Luigi', 'Bernasconi', 0, GETDATE(), 'initial deploy');
+INSERT INTO Anbieter (vorname, nachname, [Status], CreatedAt, CreatedBy) VALUES ('Camille', 'Ferrière', 0, GETDATE(), 'initial deploy');
 
 -- Standort & Standplatz
 INSERT INTO Standort (Bezeichnung, Strasse, Plz, Ort, CreatedAt, CreatedBy) 

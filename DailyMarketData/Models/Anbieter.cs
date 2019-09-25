@@ -17,7 +17,7 @@ namespace DailyMarketData.Models
         public int Id { get; set; }
         public string Vorname { get; set; }
         public string Nachname { get; set; }
-        public bool IsMitglied { get; set; }
+        public int Status { get; set; } = 0;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
