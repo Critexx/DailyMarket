@@ -3,13 +3,14 @@
 
 @inject NavigationManager NavigationManager
 @inject AbotypRepository AbotypRepo
+@using System.Security.Claims
 @using DailyMarketData.Repositorys
 @using DailyMarketData.Models
 @using Microsoft.AspNetCore.Components
 
 <h3>@title</h3>
 
-<EditForm Model="@abotyp" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@abotyp" OnValidSubmit="@SaveAbo">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>
@@ -49,7 +50,9 @@
     [Parameter]
     public int? Id { get; set; }
 
-    private Abotyp abotyp = new DailyMarketData.Models.Abotyp();
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Abotyp abotyp = new Abotyp();
 
     private string title;
 
@@ -75,16 +78,22 @@
         NavigationManager.NavigateTo("abotyp");
     }
 
-    private void HandleValidSubmit()
+    private async Task SaveAbo()
     {
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
         if (Id.HasValue)
         {
+            abotyp.UpdatedBy = user.Identity.Name;
             AbotypRepo.UpdateAbotyp(abotyp);
         }
         else
         {
+            abotyp.CreatedBy = user.Identity.Name;
             AbotypRepo.CreateAbotyp(abotyp);
         }
         NavigateToAbotyp();
     }
+
 }

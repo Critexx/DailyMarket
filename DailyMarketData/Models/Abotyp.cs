@@ -20,7 +20,7 @@ namespace DailyMarketData.Models
         [Required]
         public int AnzahlBelegungNoetig { get; set; }
         [Required]
-        public DateTime GueltigVon { get; set; }
+        public DateTime GueltigVon { get; set; } = DateTime.Today;
 
         public DateTime? GueltigBis { get; set; }
         [Required]

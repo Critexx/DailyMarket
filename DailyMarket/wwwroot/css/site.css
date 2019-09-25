@@ -28,6 +28,10 @@ td button {
     margin-bottom: 0;
 }
 
+.tdMinWidth {
+    width: 1%;
+    white-space: nowrap;
+}
 
 a, .btn-link {
     color: #0366d6;

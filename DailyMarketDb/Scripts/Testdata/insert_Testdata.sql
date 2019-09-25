@@ -21,5 +21,14 @@ INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUE
 INSERT INTO Anbieter (vorname, nachname, IsMitglied, CreatedAt, CreatedBy) VALUES ('Camille', 'Ferrière', 0, GETDATE(), 'initial deploy');
 
 -- Standort & Standplatz
-INSERT INTO Standort (Bezeichnung, Strasse, Plz, Ort, CreatedAt, CreatedBy) VALUES ('Testort', 'Zürcherstrasse 34', '8000', 'Zürich', GETDATE(), 'initial deploy');
+INSERT INTO Standort (Bezeichnung, Strasse, Plz, Ort, CreatedAt, CreatedBy) 
+VALUES ('Testort', 'Zürcherstrasse 34', '8000', 'Zürich', GETDATE(), 'initial deploy');
 INSERT INTO Standplatz (StandortId, PreisProTag, CreatedAt, CreatedBy) VALUES (1, 99.95, GETDATE(), 'initial deploy');
+
+-- Abotyp
+INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
+VALUES ('Silver Abonnement', 'Miete an einem Standort für 6 Monate', 182, 1, GETDATE(), NULL, 10, GETDATE(), 'initial deploy');
+INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
+VALUES ('Gold Abonnement', 'Miete an einem Standort für 12 Monate', 364, 1, GETDATE(), NULL, 15, GETDATE(), 'initial deploy');
+INSERT INTO Abotyp (Bezeichnung, Beschreibung, Mietdauer, AnzahlBelegungNoetig, GueltigVon, GueltigBis, RabattInProzent, CreatedAt, CreatedBy) 
+VALUES ('Platin Abonnement', 'Miete an 3 Standorten für 6 Monate', 182, 3, GETDATE(), NULL, 20, GETDATE(), 'initial deploy');

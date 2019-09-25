@@ -28,8 +28,8 @@
             <td>@a.AnzahlBelegungNoetig</td>
             <td>@a.Mietdauer</td>
             <td>@a.RabattInProzent</td>
-            <td>@a.GueltigVon</td>
-            <td>@a.GueltigBis</td>
+            <td>@a.GueltigVon.ToString("dd.MM.yyyy")</td>
+            <td>@a.GueltigBis?.ToString("dd.MM.yyyy")</td>
             <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAbotypDetail(a.Id)))">Detail</button></td>
         </tr>
         }

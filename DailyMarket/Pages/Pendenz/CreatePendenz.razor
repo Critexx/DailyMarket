@@ -97,11 +97,11 @@ else
             @foreach (Rapport rapport in Pendenz.Rapport.OrderBy(r => r.Datum))
             {
                 <tr>
-                    <td>@rapport.Datum.ToShortDateString()</td>
-                    <td>@rapport.Mitarbeiter.Vorname @rapport.Mitarbeiter.Nachname</td>
+                    <td class="tdMinWidth">@rapport.Datum.ToString("dd.MM.yyyy")</td>
+                    <td class="tdMinWidth">@rapport.Mitarbeiter.Vorname @rapport.Mitarbeiter.Nachname</td>
                     <td>@rapport.Beschreibung</td>
-                    <td>@rapport.Aufwand</td>
-                    <td>CHF @rapport.Stundensatz</td>
+                    <td class="tdMinWidth">@rapport.Aufwand</td>
+                    <td class="tdMinWidth">CHF @rapport.Stundensatz</td>
                 </tr>
             }
             </tbody>

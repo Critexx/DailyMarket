@@ -19,7 +19,7 @@ namespace DailyMarketData.Repositorys
 
         public Task<List<Pendenz>> GetPendenzAsync()
         {
-            return Task.FromResult(db.Pendenz.ToList());
+            return db.Pendenz.Include(p => p.Anbieter).ToListAsync();
         }
 
         public Task<Pendenz> GetPendenzAsync(int id)

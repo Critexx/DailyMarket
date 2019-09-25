@@ -11,7 +11,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Vorname</th>
             <th>Nachname</th>
             <th>Mitglied</th>
@@ -20,10 +19,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var a in AnbieterList)
+        @foreach (var a in AnbieterList.OrderByDescending(a => a.IsMitglied).ThenBy(a => a.Vorname))
         {
             <tr>
-                <td>@a.Id</td>
                 <td>@a.Vorname</td>
                 <td>@a.Nachname</td>
                 <td>@a.IsMitglied</td>
