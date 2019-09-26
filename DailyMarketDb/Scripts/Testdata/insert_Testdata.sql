@@ -41,6 +41,6 @@ VALUES ('Bonitätsprüfung', 'Durchführung einer einfachen Bonitätsprüfung', 
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
 VALUES ('Persönlicher Besuch', 'Einen persönlichen Besuch beim Anbieter', NULL, GETDATE(), 'initial deploy');
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
-VALUES ('1. Q-Check', 'Erstmaliger Check durch einen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
+VALUES ('1. Q-Check', 'Erstmaliger Check durch unseren internen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
-VALUES ('2. Q-Check', 'Zweiter Check durch einen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
+VALUES ('2. Q-Check', 'Zweiter Check durch einen externen unabhängigen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');

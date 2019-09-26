@@ -57,7 +57,7 @@
                             <tr>
                                 <td>@mitgliedsanforderung.Bezeichnung</td>
                                 <td>@mitgliedsanforderung.GueltigBis?.ToString("dd.MM.yyyy")</td>
-                                @if (@mitgliedsanforderung.Erfuellt)
+                                @if (mitgliedsanforderung.Erfuellt && (mitgliedsanforderung.GueltigBis == null || mitgliedsanforderung.GueltigBis >= DateTime.Today))
                                 {
                                     <td><span class="oi oi-circle-check"></span></td>
                                 } else
@@ -94,7 +94,7 @@
                 Anbieter = await AnbieterRepo.GetAnbieterAsync(Id.Value);
                 foreach (Mitgliedsanforderung mitgliedsanforderung in mitgliedsanforderungen)
                 {
-                    MitgliedsanforderungAnbieter ma = Anbieter.MitgliedsanforderungAnbieter.SingleOrDefault(m => m.Id == mitgliedsanforderung.Id);
+                    MitgliedsanforderungAnbieter ma = Anbieter.MitgliedsanforderungAnbieter.SingleOrDefault(m => m.MitgliedsanforderungId == mitgliedsanforderung.Id);
                     mitgliedsanforderungViewList.Add(new MitgliedsanforderungView()
                     {
                         Bezeichnung = mitgliedsanforderung.Bezeichnung,

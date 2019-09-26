@@ -73,8 +73,13 @@ namespace DailyMarketData.Repositorys
 
             Mitgliedsanforderung anforderung = db.Mitgliedsanforderung.Find(pendenz.MitgliedsanforderungId);
             if(anforderung == null) return;
-            
-            DateTime gueltigBis = DateTime.Today.AddDays(anforderung.Gueltigkeitsdauer.GetValueOrDefault());
+
+            DateTime? gueltigBis = null;
+            if (anforderung.Gueltigkeitsdauer != null)
+            {
+                gueltigBis = DateTime.Today.AddDays(anforderung.Gueltigkeitsdauer.GetValueOrDefault());
+            }
+
             if (mitgliedsanforderungAnbieter == null)
             {
                 mitgliedsanforderungAnbieter =
