@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject PendenzRepository PendenzRepo
 @inject AnbieterRepository AnbieterRepo
+@inject MitgliedsanforderungRepository MitgliedsanforderungRepo
 
 @using System.Security.Claims
 @using DailyMarketData.Repositorys
@@ -19,59 +20,83 @@
 }
 else
 {
-<EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="@Pendenz" OnValidSubmit="@SavePendenz">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    @if (Id.HasValue)
-    {
-        <p>
-            <label>Titel: </label>
-            <label>@Pendenz.Titel</label>
-        </p>
-        <p>
-            <label>Anbieter: </label>
-            <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
-        </p>
-        <p>
-            <label>Pendenz Status: </label>
-            @if (Pendenz.IsOffen)
-            {
-                <label>Offen</label>
-            }
-            else
-            {
-                <label>Abgeschlossen</label>
-            }
-        </p>
-        <p>
-            <label>Erstellt am: </label>
-            <label>@Pendenz.CreatedAt</label>
-        </p>
-        <p>
-            <label>Beschreibung: </label>
-        <p>@Pendenz.Beschreibung</p>
-        </p>
-    }
-    else
-    {
-        <p>
-            <label for="Titel">Titel: </label>
-            <InputText id="Titel" @bind-Value="@Pendenz.Titel" />
-        </p>
-        <select class="form-control selectWidth mb-3" @onchange="@SelectClicked">
-            @foreach (Anbieter anbieter in AnbieterList)
-            {
-                <option value="@anbieter.Id">@anbieter.Vorname @anbieter.Nachname</option>
-            }
-        </select>
-        <label for="Beschreibung">Beschreibung: </label>
-        <p>
-            <InputTextArea id="Beschreibung" @bind-Value="@Pendenz.Beschreibung" />
-        </p>
-        <button class="btn btn-primary" type="submit">Pendenz erfassen</button>
-    }
-</EditForm>
+        @if (Id.HasValue)
+        {
+            <p>
+                <label>Titel: </label>
+                <label>@Pendenz.Titel</label>
+            </p>
+            <p>
+                <label>Anbieter: </label>
+                <label>@Pendenz.Anbieter.Vorname @Pendenz.Anbieter.Nachname</label>
+            </p>
+            <p>
+                <label>Pendenz Status: </label>
+                @if (Pendenz.IsOffen)
+                {
+                    <label>Offen</label>
+                }
+                else
+                {
+                    <label>Abgeschlossen</label>
+                }
+            </p>
+            <p>
+                <label>Erstellt am: </label>
+                <label>@Pendenz.CreatedAt.ToString("dd.MM.yyyy")</label>
+            </p>
+            <p>
+                <label>Verknüpfte Anforderung: </label>
+                @if (@Pendenz.Mitgliedsanforderung == null)
+                {
+                    <label>keine</label>
+                }
+                else
+                {
+                    <label>@Pendenz.Mitgliedsanforderung.Bezeichnung</label>
+                }
+            </p>
+            <p>
+                <label>Beschreibung: </label>
+            <p>@Pendenz.Beschreibung</p>
+            </p>
+        }
+        else
+        {
+            <p>
+                <label for="Titel">Titel: </label>
+                <InputText id="Titel" @bind-Value="@Pendenz.Titel" />
+            </p>
+            <p>
+                <label>Anbieter: </label>
+                <select class="form-control selectWidth mb-3" @onchange="@AnbieterSelectClicked">
+                    @foreach (Anbieter anbieter in AnbieterList)
+                    {
+                        <option value="@anbieter.Id">@anbieter.Vorname @anbieter.Nachname</option>
+                    }
+                </select>
+            </p>
+            <p>
+                <label>Mitgliedsanforderung (optional): </label>
+                <select class="form-control selectWidth mb-3" @onchange="@AnforderungSelectClicked">
+                    <option value="0">Anforderung wählen</option>
+                    @foreach (Mitgliedsanforderung mitgliedsanforderung in AnforderungList)
+                    {
+                        <option value="@mitgliedsanforderung.Id">@mitgliedsanforderung.Bezeichnung</option>
+                    }
+                </select>
+            </p>
+            <label for="Beschreibung">Beschreibung: </label>
+            <p>
+                <InputTextArea id="Beschreibung" @bind-Value="@Pendenz.Beschreibung" />
+            </p>
+            <button class="btn btn-primary" type="submit">Pendenz erfassen</button>
+        }
+    </EditForm>
 
     <button class="btn btn-danger" @onclick="NavigateToPendenz">@cancelButton</button>
     @if (Id.HasValue && Pendenz.IsOffen)
@@ -85,25 +110,25 @@ else
         <h4>Rapport</h4>
         <table class="table mt-3">
             <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Mitarbeiter</th>
-                <th>Beschreibung</th>
-                <th>Aufwand</th>
-                <th>Stundensatz</th>
-            </tr>
+                <tr>
+                    <th>Datum</th>
+                    <th>Mitarbeiter</th>
+                    <th>Beschreibung</th>
+                    <th>Aufwand</th>
+                    <th>Stundensatz</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (Rapport rapport in Pendenz.Rapport.OrderBy(r => r.Datum))
-            {
-                <tr>
-                    <td class="tdMinWidth">@rapport.Datum.ToString("dd.MM.yyyy")</td>
-                    <td class="tdMinWidth">@rapport.Mitarbeiter.Vorname @rapport.Mitarbeiter.Nachname</td>
-                    <td>@rapport.Beschreibung</td>
-                    <td class="tdMinWidth">@rapport.Aufwand</td>
-                    <td class="tdMinWidth">CHF @rapport.Stundensatz</td>
-                </tr>
-            }
+                @foreach (Rapport rapport in Pendenz.Rapport.OrderBy(r => r.Datum))
+                {
+                    <tr>
+                        <td class="tdMinWidth">@rapport.Datum.ToString("dd.MM.yyyy")</td>
+                        <td class="tdMinWidth">@rapport.Mitarbeiter.Vorname @rapport.Mitarbeiter.Nachname</td>
+                        <td>@rapport.Beschreibung</td>
+                        <td class="tdMinWidth">@rapport.Aufwand</td>
+                        <td class="tdMinWidth">CHF @rapport.Stundensatz</td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
@@ -117,6 +142,7 @@ else
     private Pendenz Pendenz { get; set; }
 
     private List<Anbieter> AnbieterList { get; set; } = new List<Anbieter>();
+    private List<Mitgliedsanforderung> AnforderungList { get; set; } = new List<Mitgliedsanforderung>();
 
     private string title;
 
@@ -132,14 +158,21 @@ else
         }
         else
         {
+            AnforderungList = await MitgliedsanforderungRepo.GetMitgliedsanforderungAsync();
             Pendenz = new Pendenz();
         }
         UpdateButtonText();
     }
 
-    protected void SelectClicked(ChangeEventArgs e)
+    protected void AnbieterSelectClicked(ChangeEventArgs e)
     {
         Pendenz.AnbieterId = int.Parse(e.Value.ToString());
+    }
+
+    protected void AnforderungSelectClicked(ChangeEventArgs e)
+    {
+        int? anForderungsId = int.Parse(e.Value.ToString());
+        Pendenz.MitgliedsanforderungId = anForderungsId == 0 ? null : anForderungsId;
     }
 
     private void UpdateButtonText()

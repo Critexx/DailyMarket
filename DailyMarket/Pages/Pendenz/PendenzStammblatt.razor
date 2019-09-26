@@ -16,6 +16,7 @@
             <th>Erstellt</th>
             <th>Anbieter</th>
             <th>Titel</th>
+            <th>Mitgliedsanforderung</th>
             <th class="alignCenter"><span class="oi oi-magnifying-glass"></span></th>
         </tr>
     </thead>
@@ -34,6 +35,7 @@
             <td class="tdMinWidth">@pendenz.CreatedAt.ToString("dd.MM.yyyy")</td>
             <td class="tdMinWidth">@pendenz.Anbieter?.Vorname @pendenz.Anbieter?.Nachname</td>
             <td>@pendenz.Titel</td>
+            <td class="tdMinWidth">@pendenz.Mitgliedsanforderung?.Bezeichnung</td>
             <td class="alignCenter tdMinWidth"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToPendenzEdit(pendenz.Id)))">Detail</button></td>
         </tr>
         }

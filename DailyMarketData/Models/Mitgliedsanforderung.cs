@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DailyMarketData.Models
 {
@@ -22,5 +23,12 @@ namespace DailyMarketData.Models
 
         public virtual ICollection<MitgliedsanforderungAnbieter> MitgliedsanforderungAnbieter { get; set; }
         public virtual ICollection<Pendenz> Pendenz { get; set; }
+    }
+
+    public class MitgliedsanforderungView
+    {
+        public string Bezeichnung { get; set; }
+        public bool Erfuellt { get; set; } = false;
+        public DateTime? GueltigBis { get; set; } 
     }
 }

@@ -17,7 +17,7 @@ namespace DailyMarketData.Models
         public int Id { get; set; }
         public string Vorname { get; set; }
         public string Nachname { get; set; }
-        public int Status { get; set; } = 0;
+        public AnbieterStatus Status { get; set; } = AnbieterStatus.Neu;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -28,5 +28,10 @@ namespace DailyMarketData.Models
         public virtual ICollection<Mietvertrag> Mietvertrag { get; set; }
         public virtual ICollection<MitgliedsanforderungAnbieter> MitgliedsanforderungAnbieter { get; set; }
         public virtual ICollection<Pendenz> Pendenz { get; set; }
+
+        public enum AnbieterStatus
+        {
+            Neu, Provisorisch, Mitglied
+        }
     }
 }

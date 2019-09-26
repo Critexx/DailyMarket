@@ -25,12 +25,11 @@
             <tr>
                 <td>@anbieter.Vorname</td>
                 <td>@anbieter.Nachname</td>
-                <td>@AnbieterStatus.StatusText.GetValueOrDefault(anbieter.Status)</td>
+                <td>@anbieter.Status</td>
                 <td class="alignCenter"><button class="btn btn-primary" @onclick="@(new Action( () => NavigateToAnbieterEdit(anbieter.Id)))">Bearbeiten</button></td>
                 <td class="alignCenter"><button class="btn btn-danger" @onclick="@(new Action( ()=> DeleteAnbieter(anbieter.Id)))">Löschen</button></td>
             </tr>
         }
-
     </tbody>
 </table>
 <button class="btn btn-primary" @onclick="NavigateToAnbieterCreate">Neuer Anbieter</button>

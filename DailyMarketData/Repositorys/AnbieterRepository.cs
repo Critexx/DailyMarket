@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyMarketData.Repositorys
 {
@@ -21,9 +22,9 @@ namespace DailyMarketData.Repositorys
             return Task.FromResult(db.Anbieter.ToList());
         }
 
-        public Task<Anbieter> GetAnbieterAsync(int Id)
+        public Task<Anbieter> GetAnbieterAsync(int id)
         {
-            return Task.FromResult(db.Anbieter.Find(Id));
+            return db.Anbieter.Include(a => a.MitgliedsanforderungAnbieter).SingleAsync(a => a.Id == id);
         }
 
         public void DeleteAnbieterAsync(int id)

@@ -43,6 +43,14 @@ td button {
     white-space: nowrap;
 }
 
+.oi-circle-check {
+    color: green;
+}
+
+.oi-circle-x {
+    color: firebrick;
+}
+
 a, .btn-link {
     color: #0366d6;
 }

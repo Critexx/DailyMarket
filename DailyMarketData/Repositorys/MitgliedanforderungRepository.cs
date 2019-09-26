@@ -18,7 +18,6 @@ namespace DailyMarketData.Repositorys
 
         public Task<List<Mitgliedsanforderung>> GetMitgliedsanforderungAsync()
         {
-            var foo = db.Mitgliedsanforderung.ToList();
             return Task.FromResult(db.Mitgliedsanforderung.ToList());
         }
 

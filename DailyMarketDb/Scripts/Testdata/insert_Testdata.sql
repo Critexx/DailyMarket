@@ -39,7 +39,7 @@ VALUES ('Erklärungsunterschrift', 'Unterschrift der DailyMarket Mitgliedserklä
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
 VALUES ('Bonitätsprüfung', 'Durchführung einer einfachen Bonitätsprüfung', NULL, GETDATE(), 'initial deploy');
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
-VALUES ('Persönlicher Besucht', 'Einen persönlichen Besuch beim Anbieter', NULL, GETDATE(), 'initial deploy');
+VALUES ('Persönlicher Besuch', 'Einen persönlichen Besuch beim Anbieter', NULL, GETDATE(), 'initial deploy');
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 
 VALUES ('1. Q-Check', 'Erstmaliger Check durch einen Qualitätsbeauftragten', 365, GETDATE(), 'initial deploy');
 INSERT INTO Mitgliedsanforderung (Bezeichnung, Beschreibung, Gueltigkeitsdauer, CreatedAt, CreatedBy) 

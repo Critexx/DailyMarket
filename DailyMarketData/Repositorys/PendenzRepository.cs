@@ -19,12 +19,15 @@ namespace DailyMarketData.Repositorys
 
         public Task<List<Pendenz>> GetPendenzAsync()
         {
-            return db.Pendenz.Include(p => p.Anbieter).ToListAsync();
+            return db.Pendenz.Include(p => p.Anbieter).Include(p => p.Mitgliedsanforderung).ToListAsync();
         }
 
         public Task<Pendenz> GetPendenzAsync(int id)
         {
-            return db.Pendenz.Include(p => p.Rapport).ThenInclude(r => r.Mitarbeiter).SingleOrDefaultAsync(p => p.Id == id);
+            return db.Pendenz.Include(p => p.Rapport).
+                ThenInclude(r => r.Mitarbeiter).
+                Include(p => p.Mitgliedsanforderung).
+                SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public void DeletePendenzAsync(int id)
@@ -49,7 +52,51 @@ namespace DailyMarketData.Repositorys
             if(pendenz == null) return;
             pendenz.UpdatedAt = DateTime.Now;
             db.Pendenz.Update(pendenz);
+
+            // wenn die Pendenz abgeschlossen wird, dann muss auf Mitgliedanforderung geschaut werden.
+            if (!pendenz.IsOffen && pendenz.MitgliedsanforderungId != null)
+            {
+                AddOrUpdateMitgliedsanforderungAnbieter(pendenz);
+            }
             db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Setzt oder Updatet die Verknüpfung zwischen Anbieter und Mitgliedsanforderung. Bei einem Update wird die Gültigkeit
+        /// um die Zeit erhöht, wie sie in der Mitgliedsanforderung definiert ist.
+        /// </summary>
+        private void AddOrUpdateMitgliedsanforderungAnbieter(Pendenz pendenz)
+        {
+            MitgliedsanforderungAnbieter mitgliedsanforderungAnbieter = db.MitgliedsanforderungAnbieter.SingleOrDefault(x =>
+                x.AnbieterId == pendenz.AnbieterId &&
+                x.MitgliedsanforderungId == pendenz.MitgliedsanforderungId);
+
+            Mitgliedsanforderung anforderung = db.Mitgliedsanforderung.Find(pendenz.MitgliedsanforderungId);
+            if(anforderung == null) return;
+            
+            DateTime gueltigBis = DateTime.Today.AddDays(anforderung.Gueltigkeitsdauer.GetValueOrDefault());
+            if (mitgliedsanforderungAnbieter == null)
+            {
+                mitgliedsanforderungAnbieter =
+                    new MitgliedsanforderungAnbieter
+                    {
+                        AnbieterId = pendenz.AnbieterId,
+                        MitgliedsanforderungId = anforderung.Id,
+                        GueltigAb = DateTime.Today,
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = pendenz.UpdatedBy,
+                        GueltigBis = gueltigBis,
+                        Status = 0
+                    };
+                db.MitgliedsanforderungAnbieter.Add(mitgliedsanforderungAnbieter);
+            }
+            else
+            {
+                mitgliedsanforderungAnbieter.UpdatedAt = DateTime.Now;
+                mitgliedsanforderungAnbieter.UpdatedBy = pendenz.UpdatedBy;
+                mitgliedsanforderungAnbieter.GueltigBis = gueltigBis;
+                db.MitgliedsanforderungAnbieter.Update(mitgliedsanforderungAnbieter);
+            }
         }
     }
 }
