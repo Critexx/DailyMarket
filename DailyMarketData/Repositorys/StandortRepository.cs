@@ -69,5 +69,10 @@ namespace DailyMarketData.Repositorys
             db.Standort.Update(standort);
             db.SaveChanges();
         }
+
+        public Standplatz GetAvailableStandplatz(int standortId)
+        {
+            return db.Standplatz.FirstOrDefault(s => s.StandortId == standortId);
+        }
     }
 }

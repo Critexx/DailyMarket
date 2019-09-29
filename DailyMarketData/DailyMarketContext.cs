@@ -96,7 +96,7 @@ namespace DailyMarketData
                     .HasName("PK_Belegung_1");
 
                 entity.HasOne(d => d.Mietvertrag)
-                    .WithMany(p => p.Belegung)
+                    .WithMany(p => p.Belegungen)
                     .HasForeignKey(d => d.MietvertragId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Belegung_Mietvertrag");

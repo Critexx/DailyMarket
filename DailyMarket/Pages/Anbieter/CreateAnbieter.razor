@@ -15,7 +15,9 @@
 <h3>@title</h3>
 <div class="container float-left">
     <div class="row">
-        <div class="col-md-6">
+        
+        <div class="col-md-3">
+            <h5>Detail</h5>
             <EditForm Model="@Anbieter" OnValidSubmit="@SaveAnbieter">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -42,16 +44,18 @@
         </div>
         @if (Id.HasValue)
         {
-            <div class="col-md-6">
-                    <table class="table">
-                        <thead>
+            <div class="col-md-5">
+                <h5>Anforderungen</h5>
+                <table class="table">
+                    
+                    <thead>
                         <tr>
                             <th>Mitgliedsanforderung</th>
                             <th>Gültig bis</th>
                             <th>Erfüllt</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @foreach (MitgliedsanforderungView mitgliedsanforderung in mitgliedsanforderungViewList)
                         {
                             <tr>
@@ -60,14 +64,63 @@
                                 @if (mitgliedsanforderung.Erfuellt && (mitgliedsanforderung.GueltigBis == null || mitgliedsanforderung.GueltigBis >= DateTime.Today))
                                 {
                                     <td><span class="oi oi-circle-check"></span></td>
-                                } else
+                                }
+                                else
                                 {
                                     <td><span class="oi oi-circle-x"></span></td>
                                 }
                             </tr>
                         }
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4 ">
+                <h5>Mietvertrag</h5>
+                <p>
+                    <label>Abonnement: </label>
+                    @if (Anbieter.Mietvertrag.Any())
+                    {
+                        <label>@Anbieter.Mietvertrag.First().Abotyp?.Bezeichnung</label>
+                    }
+                    else
+                    {
+                        <label>Keines</label>
+                    }
+                </p>
+                @if (Anbieter.Mietvertrag.Any())
+                {
+                    <p>
+                        <label>Kosten monatlich: </label>
+                        <label>CHF @Anbieter.Mietvertrag.First()?.Abrechnung</label>
+                    </p>
+                }
+                else
+                {
+                    <button class="btn btn-primary" @onclick="NavigateToCreateMietvertrag">Mietvertrag erstellen</button>
+                }
+                <br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Standort</th>
+                            <th>Von</th>
+                            <th>Bis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Anbieter.Mietvertrag.Any())
+                        {
+                            @foreach (Belegung belegung in Anbieter.Mietvertrag.First().Belegungen)
+                            {
+                                <tr>
+                                    <td>@belegung.Standplatz.Standort.Bezeichnung</td>
+                                    <td>@belegung.Mietvertrag.GueltigVon.ToString("dd.MM.yyyy")</td>
+                                    <td>@belegung.Mietvertrag.GueltigBis?.ToString("dd.MM.yyyy")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
         }
     </div>
@@ -102,7 +155,7 @@
                         GueltigBis = ma?.GueltigBis
                     });
                 }
-                title = "Anbieter bearbeiten";
+                title = "Anbieter";
                 submitBtnText = "Speichern";
             }
             else
@@ -139,6 +192,11 @@
         private void NavigateToAnbieter()
         {
             NavigationManager.NavigateTo("anbieter");
+        }
+
+        private void NavigateToCreateMietvertrag()
+        {
+            NavigationManager.NavigateTo($"mietvertrag/create/{Anbieter.Id}");
         }
 
     }

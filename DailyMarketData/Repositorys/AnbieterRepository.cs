@@ -24,7 +24,9 @@ namespace DailyMarketData.Repositorys
 
         public Task<Anbieter> GetAnbieterAsync(int id)
         {
-            return db.Anbieter.Include(a => a.MitgliedsanforderungAnbieter).SingleAsync(a => a.Id == id);
+            return db.Anbieter.Include(a => a.MitgliedsanforderungAnbieter).
+                Include(a => a.Mietvertrag).ThenInclude(m => m.Belegungen).ThenInclude(b => b.Standplatz).ThenInclude(s => s.Standort).
+                Include(a => a.Mietvertrag).ThenInclude(m => m.Abotyp).SingleAsync(a => a.Id == id);
         }
 
         public void DeleteAnbieterAsync(int id)

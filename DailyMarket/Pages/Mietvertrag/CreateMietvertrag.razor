@@ -1,0 +1,134 @@
+﻿@page "/mietvertrag/create/{AnbieterId:int}"
+
+@inject NavigationManager NavigationManager
+@inject MietvertragRepository MietvertragRepo
+@inject AbotypRepository AbotypRepo
+@inject StandortRepository StandortRepo
+
+@using System.Security.Claims
+@using DailyMarketData.Repositorys
+@using DailyMarketData.Models
+@using Microsoft.AspNetCore.Components
+
+<h3>Mietvertrag erstellen</h3>
+
+<EditForm Model="@Mietvertrag" OnValidSubmit="@SaveMietvertrag">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>Abonnement wählen: </label>
+        <select class="form-control selectWidth" @onchange="@SelectAbotyp">
+            @foreach (Abotyp abotyp in abotypen)
+            {
+                <option value="@abotyp.Id">@abotyp.Bezeichnung</option>
+            }
+        </select>
+    </p>
+    <p>
+        <label for="Von">Gültig ab: </label>
+        <InputDate id="Von" @bind-Value="@Mietvertrag.GueltigVon" @onchange="@OnChangeGueltigVon" />
+    </p>
+    <p>
+        <label>Gültig bis: </label>
+        <label>@Mietvertrag.GueltigBis</label>
+    </p>
+    @if (selectedAbotyp != null)
+    {
+        <p>
+            <label>Standort wählen: </label>
+            <select class="form-control selectWidth" @onchange="@OnChangeStandort">
+                @foreach (Standort standort in standorte)
+                {
+                    <option value="@standort.Id">@standort.Bezeichnung</option>
+                }
+            </select>
+        </p>
+
+    }
+
+    <button class="btn btn-primary" type="submit">Mietvertrag erstellen</button>
+</EditForm>
+
+<button class="btn btn-danger" @onclick="NavigateToAnbieter">Abbrechen</button>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int? AnbieterId { get; set; }
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Mietvertrag Mietvertrag { get; set; } = new Mietvertrag();
+
+    private List<Abotyp> abotypen = new List<Abotyp>();
+    private List<Standort> standorte = new List<Standort>();
+    private string errorMessage;
+
+    private Abotyp selectedAbotyp;
+    private Standort selectedStandort;
+
+    protected override async Task OnInitializedAsync()
+    {
+        abotypen = await AbotypRepo.GetAbotypAsync();
+        selectedAbotyp = abotypen.FirstOrDefault();
+        standorte = await StandortRepo.GetStandortAsync();
+        selectedStandort = standorte.FirstOrDefault();
+        OnChangeGueltigVon();
+    }
+
+    private async Task SaveMietvertrag()
+    {
+        Standplatz standplatz = StandortRepo.GetAvailableStandplatz(selectedStandort.Id);
+        if(standplatz == null)
+        {
+            errorMessage = "An diesem Standort steht kein freier Standplatz zu Verfügung.";
+            return;
+        }
+
+        AuthenticationState authState = await AuthenticationStateTask;
+        ClaimsPrincipal user = authState.User;
+
+        Belegung belegung = new Belegung()
+        {
+            Standplatz = standplatz,
+            CreatedBy = user.Identity.Name,
+            CreatedAt = DateTime.Now
+        };
+
+        Mietvertrag.Belegungen.Add(belegung);
+        Mietvertrag.CreatedBy = user.Identity.Name;
+        Mietvertrag.AnbieterId = AnbieterId.Value;
+        Mietvertrag.Abotyp = selectedAbotyp;
+        MietvertragRepo.CreateMietvertrag(Mietvertrag);
+
+        NavigateToAnbieter();
+    }
+
+    private void SelectAbotyp(ChangeEventArgs e)
+    {
+        Mietvertrag.AbotypId = int.Parse(e.Value.ToString());
+        selectedAbotyp = abotypen.Single(a => a.Id == Mietvertrag.AbotypId);
+    }
+
+    private void OnChangeGueltigVon()
+    {
+        Mietvertrag.GueltigBis = Mietvertrag.GueltigVon.AddDays(selectedAbotyp.Mietdauer);
+    }
+
+    private void OnChangeStandort(ChangeEventArgs e)
+    {
+        selectedStandort = standorte.Single(s => s.Id == int.Parse(e.Value.ToString()));
+    }
+
+    private void NavigateToAnbieter()
+    {
+        NavigationManager.NavigateTo($"anbieter/{AnbieterId}");
+    }
+
+}

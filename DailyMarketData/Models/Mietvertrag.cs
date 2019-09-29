@@ -7,13 +7,13 @@ namespace DailyMarketData.Models
     {
         public Mietvertrag()
         {
-            Belegung = new HashSet<Belegung>();
+            Belegungen = new HashSet<Belegung>();
         }
 
         public int Id { get; set; }
         public int AbotypId { get; set; }
         public int AnbieterId { get; set; }
-        public DateTime GueltigVon { get; set; }
+        public DateTime GueltigVon { get; set; } = DateTime.Today;
         public DateTime? GueltigBis { get; set; }
         public decimal Abrechnung { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -23,6 +23,6 @@ namespace DailyMarketData.Models
 
         public virtual Abotyp Abotyp { get; set; }
         public virtual Anbieter Anbieter { get; set; }
-        public virtual ICollection<Belegung> Belegung { get; set; }
+        public virtual ICollection<Belegung> Belegungen { get; set; }
     }
 }
